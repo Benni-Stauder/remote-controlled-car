@@ -6,8 +6,6 @@ with contextlib.redirect_stdout(None):
 # Calibration and button mapping is saved in config file
 import config
 
-from time import time
-
 class SteeringWheel():
     """Class for steering wheel connection"""
 
