@@ -1,4 +1,4 @@
-steering_wheel = dict(
+steeringWheel = dict(
     axes = {
         0: 'steering',
         1: 'accelerating',
