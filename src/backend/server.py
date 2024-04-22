@@ -1,13 +1,16 @@
 import json
 import socket
 
+from src.steeringwheel.SteeringWheel import SteeringWheel
+
 
 class ServerUDP:
 
     def __init__(self):
         # load configurations from server
-        with open('config.json', 'r') as f:
+        with open('../../config.json', 'r') as f:
             serverConfig = json.load(f)
+            serverConfig = serverConfig['server']
 
         # retrieve host ip address
         host = socket.gethostname()
@@ -44,6 +47,23 @@ class ServerUDP:
                 print(f"Message from unknown Client: {address}")
 
             self.socket.sendto(str.encode(msg), address)
+
+            wheel = SteeringWheel()
+            connected = wheel.get_connected_joysticks()
+            selected = 0
+
+            if wheel.init_wheel(connected[selected]):
+
+                wheelInput = wheel.getInput()
+                if wheelInput is not None:
+                    print("input: ", wheelInput)
+
+                if not wheel.check_connection():
+                    print("Lost connection to wheel")
+                    break
+
+            else:
+                print("Initialization failed")
 
 
 ServerUDP().start("Hello World!")

@@ -16,7 +16,7 @@ if wheel.init_wheel(connected[selected]):
         # Abfrage des aktuellen Inputs
         input = wheel.getInput()
 
-        # Verarbeitung nur wenn sich Input von Lenkrad geaendert hat
+        # Verarbeitung, nur wenn sich Input von Lenkrad geaendert hat
         if input != None:
             print("input: ", input)
 

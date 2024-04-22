@@ -1,17 +1,21 @@
 
 import contextlib
+import json
+
 with contextlib.redirect_stdout(None):
     import pygame
 
-# Calibration and button mapping is saved in config file
-import config
 
-class SteeringWheel():
+class SteeringWheel:
     """Class for steering wheel connection"""
 
     def __init__(self) -> None:
         """Initialization of pygame joysticks and variables"""
+        with open('../../config.json', 'r') as f:
+            wheelConfig = json.load(f)
+        
         pygame.joystick.init()
+        self.wheelConfig = wheelConfig['wheel']
         self.connected_devices = []
         self.device_used = None
         self.sample_count = 0
@@ -56,7 +60,7 @@ class SteeringWheel():
             if event.type == pygame.JOYBUTTONDOWN:
                 button = event.button
                 try:
-                    button = config.steering_wheel["buttons"][button]
+                    button = self.wheelConfig["buttons"][button]
                 except:
                     button = "NaN"
                 eventDict = {"type": "button", "value": button}
@@ -66,30 +70,30 @@ class SteeringWheel():
                 if self.sample_count > self.sample_rate:
                     axis = event.axis
                     try:
-                        axis = config.steering_wheel["axes"][axis]
+                        axis = self.wheelConfig["axes"][axis]
                     except:
                         axis = "NaN"
                     value = event.value
 
                     if axis == "steering":
-                        if config.steering_wheel["calibration"]["steeringType"] == "linear":
-                            min = config.steering_wheel["calibration"]["steeringMin"]
-                            max = config.steering_wheel["calibration"]["steeringMax"]
-                            degMax = config.steering_wheel["calibration"]["maxDegrees"]
+                        if self.wheelConfig["calibration"]["steeringType"] == "linear":
+                            min = self.wheelConfig["calibration"]["steeringMin"]
+                            max = self.wheelConfig["calibration"]["steeringMax"]
+                            degMax = self.wheelConfig["calibration"]["maxDegrees"]
                             value = int(round(degMax/(max-min)*value, 0))
 
                     if axis == "accelerating":
-                        if config.steering_wheel["calibration"]["accelerationType"] == "linear":
-                            min = config.steering_wheel["calibration"]["accelerationMin"]
-                            max = config.steering_wheel["calibration"]["accelerationMax"]
+                        if self.wheelConfig["calibration"]["accelerationType"] == "linear":
+                            min = self.wheelConfig["calibration"]["accelerationMin"]
+                            max = self.wheelConfig["calibration"]["accelerationMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
                             value = 0 if value < 0 else value
                             value = 100 if value > 0 else value
 
                     if axis == "braking":
-                        if config.steering_wheel["calibration"]["brakingType"] == "linear":
-                            min = config.steering_wheel["calibration"]["brakingMin"]
-                            max = config.steering_wheel["calibration"]["brakingMax"]
+                        if self.wheelConfig["calibration"]["brakingType"] == "linear":
+                            min = self.wheelConfig["calibration"]["brakingMin"]
+                            max = self.wheelConfig["calibration"]["brakingMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
                             value = 0 if value < 0 else value
                             value = 100 if value > 0 else value
