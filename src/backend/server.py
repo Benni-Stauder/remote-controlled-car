@@ -56,10 +56,12 @@ class ServerUDP:
 
                 wheelInput = wheel.getInput()
                 if wheelInput is not None:
-                    print("input: ", wheelInput)
+                    controlsMessage = str(wheelInput)
+                    self.socket.sendto(str.encode(controlsMessage), address)
 
                 if not wheel.check_connection():
-                    print("Lost connection to wheel")
+                    controlsMessage = "Lost connection to wheel"
+                    self.socket.sendto(str.encode(controlsMessage), address)
                     break
 
             else:
