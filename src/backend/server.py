@@ -1,8 +1,10 @@
 import json
 import socket
 
-from src.steeringwheel.SteeringWheel import SteeringWheel
+# from pathlib import Path
+# print(Path(__file__).parent.parent)
 
+from steeringwheel.SteeringWheel import SteeringWheel
 
 class ServerUDP:
 
@@ -10,7 +12,7 @@ class ServerUDP:
         # load configurations from server
         with open('../../config.json', 'r') as f:
             serverConfig = json.load(f)
-            serverConfig = serverConfig['server']
+            serverConfig = serverConfig['backend']
 
         # retrieve host ip address
         host = socket.gethostname()
