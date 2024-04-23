@@ -1,21 +1,25 @@
 
 import contextlib
+import json
+
 with contextlib.redirect_stdout(None):
     import pygame
 
-# Calibration and button mapping is saved in config file
-import config
 
-class SteeringWheel():
+class SteeringWheel:
     """Class for steering wheel connection"""
 
     def __init__(self) -> None:
         """Initialization of pygame joysticks and variables"""
+        with open('../../config.json', 'r') as f:
+            wheelConfig = json.load(f)
+        
         pygame.joystick.init()
-        self.connectedDevices = []
-        self.deviceUsed = None
-        self.sampleCount = 0
-        self.sampleRate = 1
+        self.wheelConfig = wheelConfig['wheel']
+        self.connected_devices = []
+        self.device_used = None
+        self.sample_count = 0
+        self.sample_rate = 1
 
     def getConnectedJoysticks(self):
         """Returns list with names of all joysticks that are connected to the computer"""
@@ -56,7 +60,7 @@ class SteeringWheel():
             if event.type == pygame.JOYBUTTONDOWN:
                 button = event.button
                 try:
-                    button = config.steeringWheel["buttons"][button]
+                    button = self.wheelConfig["buttons"][button]
                 except:
                     button = "NaN"
                 eventDict = {"type": "button", "value": button}
@@ -66,30 +70,30 @@ class SteeringWheel():
                 if self.sampleCount > self.sampleRate:
                     axis = event.axis
                     try:
-                        axis = config.steeringWheel["axes"][axis]
+                        axis = self.wheelConfig["axes"][axis]
                     except:
                         axis = "NaN"
                     value = event.value
 
                     if axis == "steering":
-                        if config.steeringWheel["calibration"]["steeringType"] == "linear":
-                            min = config.steeringWheel["calibration"]["steeringMin"]
-                            max = config.steeringWheel["calibration"]["steeringMax"]
-                            degMax = config.steeringWheel["calibration"]["maxDegrees"]
+                        if self.wheelConfig["calibration"]["steeringType"] == "linear":
+                            min = self.wheelConfig["calibration"]["steeringMin"]
+                            max = self.wheelConfig["calibration"]["steeringMax"]
+                            degMax = self.wheelConfig["calibration"]["maxDegrees"]
                             value = int(round(degMax/(max-min)*value, 0))
 
                     if axis == "accelerating":
-                        if config.steeringWheel["calibration"]["accelerationType"] == "linear":
-                            min = config.steeringWheel["calibration"]["accelerationMin"]
-                            max = config.steeringWheel["calibration"]["accelerationMax"]
+                        if self.wheelConfig["calibration"]["accelerationType"] == "linear":
+                            min = self.wheelConfig["calibration"]["accelerationMin"]
+                            max = self.wheelConfig["calibration"]["accelerationMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
                             value = 0 if value < 0 else value
                             value = 100 if value > 0 else value
 
                     if axis == "braking":
-                        if config.steeringWheel["calibration"]["brakingType"] == "linear":
-                            min = config.steeringWheel["calibration"]["brakingMin"]
-                            max = config.steeringWheel["calibration"]["brakingMax"]
+                        if self.wheelConfig["calibration"]["brakingType"] == "linear":
+                            min = self.wheelConfig["calibration"]["brakingMin"]
+                            max = self.wheelConfig["calibration"]["brakingMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
                             value = 0 if value < 0 else value
                             value = 100 if value > 0 else value
