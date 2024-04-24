@@ -25,7 +25,7 @@ class ServerUDP:
         self.socket = serverSocket
         self.hostIP = hostIP
         self.clientIP = serverConfig['client']['ip']
-        self.port = serverConfig['server']['port']
+        self.port = serverConfig['server']['port'] 
         self.bufferSize = serverConfig['server']['bufferSize']
 
     def start(self, msg):
