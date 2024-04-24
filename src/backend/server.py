@@ -1,5 +1,7 @@
 import json
 import socket
+import random
+import time
 
 # from pathlib import Path
 # print(Path(__file__).parent.parent)
@@ -28,6 +30,22 @@ class ServerUDP:
         self.port = serverConfig['server']['port'] 
         self.bufferSize = serverConfig['server']['bufferSize']
 
+        self.DEMO_MODE = True
+
+    def demoControllerInput(self):
+        button = random.randint(1, 4)
+
+        if button == 1:
+            return "A, 0"
+        if button == 2:
+            return "B, 0"
+        if button == 3:
+            return "X, 0"
+        if button == 4:
+            return "Y, 0"
+
+        time.sleep(1)
+
     def start(self, msg):
         # start server
         self.socket.bind((self.hostIP, self.port))
@@ -54,21 +72,24 @@ class ServerUDP:
             connected = wheel.getConnectedJoysticks()
             selected = 0
 
-            if wheel.initWheel(connected[selected]):
+            if not self.DEMO_MODE:
+                if len(connected) != 0:
+                    if wheel.initWheel(connected[selected]):
+                        wheelInput = wheel.getInput()
+                        if wheelInput is not None:
+                            controlsMessage = str(wheelInput)
+                            self.socket.sendto(str.encode(controlsMessage), address)
 
-                wheelInput = wheel.getInput()
-                if wheelInput is not None:
-                    controlsMessage = str(wheelInput)
-                    self.socket.sendto(str.encode(controlsMessage), address)
-
-                if not wheel.checkConnection():
-                    controlsMessage = "Lost connection to wheel"
-                    self.socket.sendto(str.encode(controlsMessage), address)
-                    break
-
+                        if not wheel.checkConnection():
+                            controlsMessage = "Lost connection to wheel"
+                            self.socket.sendto(str.encode(controlsMessage), address)
+                            break
+                else:
+                    print("Initialization failed")
             else:
-                print("Initialization failed")
-
+                wheelInput = self.demoControllerInput()
+                if wheelInput != None:
+                    self.socket.sendto(str.encode(str(wheelInput)), address)
 
 ServerUDP().start("Hello World!")
 
