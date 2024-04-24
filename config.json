@@ -10,7 +10,6 @@
     }
   },
 
-
   "wheel": {
     "axes": {
       "0": "steering",
