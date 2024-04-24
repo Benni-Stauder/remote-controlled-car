@@ -4,7 +4,7 @@ import socket
 # from pathlib import Path
 # print(Path(__file__).parent.parent)
 
-from steeringwheel.SteeringWheel import SteeringWheel
+from src.steeringwheel.SteeringWheel import SteeringWheel
 
 class ServerUDP:
 
@@ -31,7 +31,7 @@ class ServerUDP:
     def start(self, msg):
         # start server
         self.socket.bind((self.hostIP, self.port))
-        print(f"UDP server listening on port {self.port}...")
+        print(f"UDP server listening on port {self.port} with IP {self.hostIP}...")
 
         # listen for incoming messages
         while True:
@@ -51,17 +51,17 @@ class ServerUDP:
             self.socket.sendto(str.encode(msg), address)
 
             wheel = SteeringWheel()
-            connected = wheel.get_connected_joysticks()
+            connected = wheel.getConnectedJoysticks()
             selected = 0
 
-            if wheel.init_wheel(connected[selected]):
+            if wheel.initWheel(connected[selected]):
 
                 wheelInput = wheel.getInput()
                 if wheelInput is not None:
                     controlsMessage = str(wheelInput)
                     self.socket.sendto(str.encode(controlsMessage), address)
 
-                if not wheel.check_connection():
+                if not wheel.checkConnection():
                     controlsMessage = "Lost connection to wheel"
                     self.socket.sendto(str.encode(controlsMessage), address)
                     break

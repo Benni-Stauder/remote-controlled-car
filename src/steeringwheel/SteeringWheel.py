@@ -24,7 +24,7 @@ class SteeringWheel:
     def getConnectedJoysticks(self):
         """Returns list with names of all joysticks that are connected to the computer"""
         self.connectedDevices = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
-        names = [x.getName() for x in self.connectedDevices]
+        names = [x.get_name() for x in self.connectedDevices]
         return names
     
     def initWheel(self, name: str):
@@ -36,11 +36,11 @@ class SteeringWheel:
         Returns 'True' if initialization was successful.
         
         """
-        names = [x.getName() for x in self.connectedDevices]
+        names = [x.get_name() for x in self.connectedDevices]
         if name not in names:
             return False
         for device in self.connectedDevices:
-            if name == device.getName():
+            if name == device.get_name():
                 self.deviceUsed = device
                 break
         pygame.init()
