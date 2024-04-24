@@ -10,7 +10,7 @@ class ServerUDP:
         # load configurations from server
         with open('../../config.json', 'r') as f:
             serverConfig = json.load(f)
-            serverConfig = serverConfig['server']
+            serverConfig = serverConfig['backend']
 
         # retrieve host ip address
         host = socket.gethostname()
@@ -23,7 +23,7 @@ class ServerUDP:
         self.socket = serverSocket
         self.hostIP = hostIP
         self.clientIP = serverConfig['client']['ip']
-        self.port = serverConfig['server']['port']
+        self.port = serverConfig['server']['port'] 
         self.bufferSize = serverConfig['server']['bufferSize']
 
     def start(self, msg):
