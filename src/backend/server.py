@@ -31,9 +31,15 @@ class ServerUDP:
         self.bufferSize = serverConfig['server']['bufferSize']
 
         self.DEMO_MODE = True
+        self.counter = 0
 
     def demoControllerInput(self):
+        #print("demo called")
         button = random.randint(1, 4)
+
+        time.sleep(self.counter)
+
+        self.counter += 1
 
         if button == 1:
             return "A, 0"
@@ -44,8 +50,6 @@ class ServerUDP:
         if button == 4:
             return "Y, 0"
 
-        time.sleep(1)
-
     def start(self, msg):
         # start server
         self.socket.bind((self.hostIP, self.port))
@@ -54,13 +58,16 @@ class ServerUDP:
         # listen for incoming messages
         while True:
             # receive message
+            #try:
             bytesAddressPair = self.socket.recvfrom(self.bufferSize)
-
-            # retrieve message and address from client
+            #except timeout:
+            #    print("timeout caught")
+            #
+            # # retrieve message and address from client
             message = bytesAddressPair[0]
             address = bytesAddressPair[1]
-
-            # print received message from correct client
+            #
+            # # print received message from correct client
             if self.clientIP in address:
                 print(f"Message from Client: {message}")
             else:
@@ -87,6 +94,7 @@ class ServerUDP:
                 else:
                     print("Initialization failed")
             else:
+                #print("loop")
                 wheelInput = self.demoControllerInput()
                 if wheelInput != None:
                     self.socket.sendto(str.encode(str(wheelInput)), address)
