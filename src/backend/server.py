@@ -1,7 +1,5 @@
 import json
 import socket
-import random
-import time
 
 # from pathlib import Path
 # print(Path(__file__).parent.parent)
@@ -79,20 +77,18 @@ class ServerUDP:
             connected = wheel.getConnectedJoysticks()
             selected = 0
 
-            if not self.DEMO_MODE:
-                if len(connected) != 0:
-                    if wheel.initWheel(connected[selected]):
-                        wheelInput = wheel.getInput()
-                        if wheelInput is not None:
-                            controlsMessage = str(wheelInput)
-                            self.socket.sendto(str.encode(controlsMessage), address)
+            if wheel.initWheel(connected[selected]):
 
-                        if not wheel.checkConnection():
-                            controlsMessage = "Lost connection to wheel"
-                            self.socket.sendto(str.encode(controlsMessage), address)
-                            break
-                else:
-                    print("Initialization failed")
+                wheelInput = wheel.getInput()
+                if wheelInput is not None:
+                    controlsMessage = str(wheelInput)
+                    self.socket.sendto(str.encode(controlsMessage), address)
+
+                if not wheel.checkConnection():
+                    controlsMessage = "Lost connection to wheel"
+                    self.socket.sendto(str.encode(controlsMessage), address)
+                    break
+
             else:
                 #print("loop")
                 wheelInput = self.demoControllerInput()
