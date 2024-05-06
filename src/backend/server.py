@@ -33,6 +33,11 @@ class ServerUDP:
         self.socket.bind((self.hostIP, self.port))
         print(f"UDP server listening on port {self.port} with IP {self.hostIP}...")
 
+        # Byte 1: steering
+        # Byte 2: accelerating
+        # Byte 3: braking
+        binaryControls = 0x000000
+
         # listen for incoming messages
         while True:
             # receive message
@@ -55,11 +60,23 @@ class ServerUDP:
             selected = 0
 
             if wheel.initWheel(connected[selected]):
-
                 wheelInput = wheel.getInput()
                 if wheelInput is not None:
-                    controlsMessage = str(wheelInput)
-                    self.socket.sendto(str.encode(controlsMessage), address)
+
+                    # create the binary message
+                    if wheelInput.get("type") == "steering":
+                        binaryControls &= 0x00FFFF
+                        binaryControls |= wheelInput["value"]
+
+                    elif wheelInput.get("type") == "accelerating":
+                        binaryControls &= 0xFF00FF
+                        binaryControls |= (wheelInput["value"] << 8)
+
+                    elif wheelInput.get("type") == "braking":
+                        binaryControls &= 0xFFFF00
+                        binaryControls |= (wheelInput["value"] << 16)
+
+                    self.socket.sendto(binaryControls.to_bytes(3, byteorder='big'), address)
 
                 if not wheel.checkConnection():
                     controlsMessage = "Lost connection to wheel"
