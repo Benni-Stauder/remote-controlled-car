@@ -1,5 +1,7 @@
 import json
 import socket
+import time
+import random
 
 # from pathlib import Path
 # print(Path(__file__).parent.parent)
@@ -28,6 +30,26 @@ class ServerUDP:
         self.port = serverConfig['server']['port'] 
         self.bufferSize = serverConfig['server']['bufferSize']
 
+        self.DEMO_MODE = True
+        self.counter = 0
+
+    def demoControllerInput(self):
+        #print("demo called")
+        button = random.randint(1, 4)
+
+        time.sleep(self.counter)
+
+        self.counter += 1
+
+        if button == 1:
+            return "A, 0"
+        if button == 2:
+            return "B, 0"
+        if button == 3:
+            return "X, 0"
+        if button == 4:
+            return "Y, 0"
+
     def start(self, msg):
         # start server
         self.socket.bind((self.hostIP, self.port))
@@ -41,13 +63,16 @@ class ServerUDP:
         # listen for incoming messages
         while True:
             # receive message
+            #try:
             bytesAddressPair = self.socket.recvfrom(self.bufferSize)
-
-            # retrieve message and address from client
+            #except timeout:
+            #    print("timeout caught")
+            #
+            # # retrieve message and address from client
             message = bytesAddressPair[0]
             address = bytesAddressPair[1]
-
-            # print received message from correct client
+            #
+            # # print received message from correct client
             if self.clientIP in address:
                 print(f"Message from Client: {message}")
             else:
@@ -84,8 +109,10 @@ class ServerUDP:
                     break
 
             else:
-                print("Initialization failed")
-
+                #print("loop")
+                wheelInput = self.demoControllerInput()
+                if wheelInput != None:
+                    self.socket.sendto(str.encode(str(wheelInput)), address)
 
 ServerUDP().start("Hello World!")
 

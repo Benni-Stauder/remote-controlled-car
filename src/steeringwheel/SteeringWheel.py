@@ -16,10 +16,12 @@ class SteeringWheel:
         
         pygame.joystick.init()
         self.wheelConfig = wheelConfig['wheel']
-        self.connected_devices = []
-        self.device_used = None
-        self.sample_count = 0
-        self.sample_rate = 1
+        self.connectedDevices = []
+        self.deviceUsed = None
+        self.sampleCount = 0
+        self.sampleRate = 1
+
+        print(self.wheelConfig)
 
     def getConnectedJoysticks(self):
         """Returns list with names of all joysticks that are connected to the computer"""
@@ -60,7 +62,7 @@ class SteeringWheel:
             if event.type == pygame.JOYBUTTONDOWN:
                 button = event.button
                 try:
-                    button = self.wheelConfig["buttons"][button]
+                    button = self.wheelConfig["buttons"][str(button)]
                 except:
                     button = "NaN"
                 eventDict = {"type": "button", "value": button}
@@ -69,8 +71,9 @@ class SteeringWheel:
             if event.type == pygame.JOYAXISMOTION:
                 if self.sampleCount > self.sampleRate:
                     axis = event.axis
+                    #print("axis: ", axis)
                     try:
-                        axis = self.wheelConfig["axes"][axis]
+                        axis = self.wheelConfig['axes'][str(axis)]
                     except:
                         axis = "NaN"
                     value = event.value
