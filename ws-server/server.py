@@ -6,26 +6,21 @@ import random
 
 async def send_data(websocket):
     while True:
-        try:
-            speed = random.randint(20, 100)
-            rpm = random.randint(1000, 8000)
-            lateral_acceleration = random.uniform(0.0, 1.0)
-            brake_percentage = random.randint(0, 100)
+        speed = random.randint(0, 100)
+        rpm = random.randint(1000, 8000)
+        lateral_acceleration = random.randint(1, 5)
+        brake_percentage = random.randint(0, 100)
 
-            #insert real data here
-            message = json.dumps({
-                "speed": speed,
-                "rpm": rpm,
-                "lateralAcceleration": lateral_acceleration,
-                "brakePercentage": brake_percentage
-            })
+        #insert real data here
+        message = json.dumps({
+            "speed": speed,
+            "rpm": rpm,
+            "lateralAcceleration": lateral_acceleration,
+            "brakePercentage": brake_percentage
+        })
 
-            await websocket.send(message)
-
-
-        except websockets.ConnectionClosed:
-            print("Connection closed, stopping data sender.")
-            break
+        await websocket.send(message)
+        await asyncio.sleep(0.5)
 
 
 async def receive_data(websocket):
