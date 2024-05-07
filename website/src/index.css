@@ -1,0 +1,325 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    height: 100%; /* Ensures the body takes full viewport height */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding-top: 70px;
+    padding-bottom: 50px;
+    background-color: rgba(165, 164, 164, 0.74);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This will keep the background fixed during scrolling */
+}
+
+.navbar {
+    background-color: #10215c;
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;   /* Use fixed to keep it at the top of the page */
+    top: 0;            /* Aligns the navbar at the top of the viewport */
+    left: 0;           /* Aligns the navbar to the left of the viewport */
+    z-index: 1000;     /* Ensures the navbar is above other content */
+}
+
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 0;
+}
+
+.nav-links li {
+    padding: 0 15px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.toggle-button {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-links.open {
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.80);
+    }
+
+    .toggle-button {
+        display: inline-block;
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+    }
+}
+
+/* Container for content */
+.container {
+    max-width: 800px; /* Ideal for reading */
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+img {
+    max-width: 100%;
+}
+
+h1, h2 {
+    color: #343a40;
+}
+
+/* Expandable Sections */
+.expandable-section h2 {
+    cursor: pointer;
+    background-color: #10215c; /* Brand color for headers */
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+.expandable-section h2:hover {
+    background-color: rgba(16, 33, 92, 0.73); /* Darker on hover */
+}
+
+.expandable-section p {
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-left: 5px solid #10215c;
+    margin: 0 0 10px;
+    border-radius: 5px;
+}
+
+.expandable-section h3 {
+    cursor: pointer;
+    color: #10215c; /* A lighter shade than the main headings for a hierarchical feel */
+    margin-top: 10px;
+    margin-left: 20px; /* Indent subheadings for a clear structure */
+}
+
+.expandable-section h3:hover {
+    text-decoration: underline;
+}
+
+.expandable-section img {
+    max-width: 100%; /* Ensures the image is responsive and fits within the container */
+    height: auto;    /* Maintains the aspect ratio of the image */
+    display: block;  /* Correct any alignment issues, ensuring the image does not inline */
+    margin-top: 10px; /* Adds some space between the text and the image */
+}
+
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    body {
+        padding-top: 100px; /* Increased padding for smaller devices */
+    }
+
+    .container {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        margin-bottom: 10px;
+    }
+}
+
+.contact-form {
+    margin-top: 20px;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #10215c;
+    outline: none;
+}
+
+.submit-button {
+    background-color: #10215c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.submit-button:hover {
+    background-color: #10215c;
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.team-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Circular images */
+    margin-right: 20px;
+}
+
+.team-member p {
+    flex: 1; /* Take up remaining space */
+}
+
+.site-footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    height: 25px;
+    padding: 2px;  /* Reduced padding */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px; /* Smaller font size if necessary */
+}
+
+.site-footer a {
+    color: #999;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.site-footer a:hover {
+    color: #fff;
+}
+
+.footer {
+    padding-bottom: 0; /* Ensure content does not overlap with footer */
+}
+
+.sub-navbar {
+    position: fixed; /* Keep the navbar fixed during scrolling */
+    left: 0;
+    top: 50px;
+    width: 200px; /* Set a fixed width for the sidebar */
+    max-height: calc(100vh - 50px - 25px);
+    height: calc(100vh - 50px - 25px); /* Full height */
+    background-color: white;
+    overflow: auto; /* Enables scrolling within the sidebar if content overflows */
+    z-index: 99; /* Ensure it stays above other content */
+}
+
+.sub-navbar button {
+    display: block; /* Stack buttons vertically */
+    width: 100%; /* Extend buttons to the full width of the sidebar */
+    padding: 20px;
+    text-align: left; /* Align text to the left */
+    border: none;
+    background: none;
+    color: black;
+    text-decoration: none;
+}
+
+.sub-navbar button:hover {
+    background-color: rgba(16, 33, 92, 0.28);
+}
+
+/* Styles for the main content area */
+.main-content {
+    margin-left: 200px; /* Offset the main content area to the right of the sidebar */
+    flex: 1; /* Takes up the remaining space */
+    padding: 20px;
+}
+
+.container-documentation {
+    flex: 1;
+    padding-left: 200px;
+}
+
+.container ul {
+    padding-left: 20px;
+}
+
+.container ol {
+    padding-left: 20px;
+}
+
+
+@media (max-width: 768px) {
+    .sub-navbar {
+        width: 110px; /* Smaller width for smaller screens */
+        padding: 5px;
+    }
+
+    .sub-navbar button {
+        padding-left: 5px; /* Less padding on smaller screens */
+    }
+
+    .container-documentation {
+        padding-left: 110px; /* Adjust margin according to the sidebar width on smaller screens */
+    }
+}
