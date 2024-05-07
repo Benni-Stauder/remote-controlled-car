@@ -12,6 +12,7 @@ async def send_data(websocket):
             lateral_acceleration = random.uniform(0.0, 1.0)
             brake_percentage = random.randint(0, 100)
 
+            #insert real data hear
             message = json.dumps({
                 "speed": speed,
                 "rpm": rpm,
