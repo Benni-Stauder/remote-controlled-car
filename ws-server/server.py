@@ -6,8 +6,8 @@ import random
 
 async def send_data(websocket):
     while True:
-        speed = random.randint(0, 100)
-        rpm = random.randint(1000, 8000)
+        speed = random.randint(0, 10)
+        rpm = random.randint(1000, 2000)
         lateral_acceleration = random.randint(1, 5)
         brake_percentage = random.randint(0, 100)
 
