@@ -21,7 +21,7 @@ class SteeringWheel:
         self.sampleCount = 0
         self.sampleRate = 1
 
-        print(self.wheelConfig)
+        #print(self.wheelConfig)
 
     def getConnectedJoysticks(self):
         """Returns list with names of all joysticks that are connected to the computer"""
@@ -71,7 +71,7 @@ class SteeringWheel:
             if event.type == pygame.JOYAXISMOTION:
                 if self.sampleCount > self.sampleRate:
                     axis = event.axis
-                    #print("axis: ", axis)
+                    print("axis: ", axis)
                     try:
                         axis = self.wheelConfig['axes'][str(axis)]
                     except:
@@ -87,19 +87,24 @@ class SteeringWheel:
 
                     if axis == "accelerating":
                         if self.wheelConfig["calibration"]["accelerationType"] == "linear":
+                            print("value: ", value)
                             min = self.wheelConfig["calibration"]["accelerationMin"]
                             max = self.wheelConfig["calibration"]["accelerationMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
-                            value = 0 if value < 0 else value
-                            value = 100 if value > 0 else value
+                            if value < 0:
+                                value = 0
+                            if value > 100:
+                                value = 100
 
                     if axis == "braking":
                         if self.wheelConfig["calibration"]["brakingType"] == "linear":
                             min = self.wheelConfig["calibration"]["brakingMin"]
                             max = self.wheelConfig["calibration"]["brakingMax"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
-                            value = 0 if value < 0 else value
-                            value = 100 if value > 0 else value
+                            if value < 0:
+                                value = 0
+                            if value > 100:
+                                value = 100
 
                     eventDict = {"type": axis, "value": value}
                     self.sampleCount = 0
