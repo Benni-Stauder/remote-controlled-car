@@ -4,13 +4,14 @@ import time
 import random
 
 # from pathlib import Path
-# print(Path(__file__).parent.parent)
+# print(Path(_file_).parent.parent)
 
 from src.steeringwheel.SteeringWheel import SteeringWheel
 
+
 class ServerUDP:
 
-    def __init__(self):
+    def _init_(self):
         # load configurations from server
         with open('../../config.json', 'r') as f:
             serverConfig = json.load(f)
@@ -28,7 +29,7 @@ class ServerUDP:
         self.socket = serverSocket
         self.hostIP = hostIP
         self.clientIP = serverConfig['client']['ip']
-        self.port = serverConfig['server']['port'] 
+        self.port = serverConfig['server']['port']
         self.bufferSize = serverConfig['server']['bufferSize']
 
         self.DEMO_MODE = True
@@ -75,12 +76,12 @@ class ServerUDP:
         # listen for incoming messages
         while True:
             # receive message
-            #try:
+            # try:
 
-            #except timeout:
+            # except timeout:
             #    print("timeout caught")
             #
-            #except:
+            # except:
             #    pass
 
             # # retrieve message and address from client
@@ -88,16 +89,16 @@ class ServerUDP:
             address = bytesAddressPair[1]
             #
             # # print received message from correct client
-            #if self.clientIP in address:
+            # if self.clientIP in address:
             #    print(f"Message from Client: {message}")
-            #else:
+            # else:
             #    print(f"Message from unknown Client: {address}")
 
-            #self.socket.sendto(str.encode(msg), address)
+            # self.socket.sendto(str.encode(msg), address)
 
             try:
                 if wheel.initWheel(connected[selected]):
-                    #print("wheel initialized")
+                    # print("wheel initialized")
                     wheelInput = wheel.getInput()
                     if wheelInput is not None:
                         print("wheelInput: ", wheelInput)
@@ -126,24 +127,26 @@ class ServerUDP:
                             braking = wheelInput["value"]
 
                         controlJSON = {"type": "control",
-                                       "values": {"steering": steering, "accelerating": acceleration, "braking": braking}}
+                                       "values": {"steering": steering, "accelerating": acceleration,
+                                                  "braking": braking}}
                         self.socket.sendto(str.encode(str(controlJSON)), address)
 
-                        #self.socket.sendto(binaryControls.to_bytes(3, byteorder='big'), address)
-                        #self.socket.sendto(binaryControls.to_bytes(3, byteorder='big'), (self.clientIP, self.port))
+                        # self.socket.sendto(binaryControls.to_bytes(3, byteorder='big'), address)
+                        # self.socket.sendto(binaryControls.to_bytes(3, byteorder='big'), (self.clientIP, self.port))
 
                     if not wheel.checkConnection():
                         controlsMessage = "Lost connection to wheel"
-                        #self.socket.sendto(str.encode(controlsMessage), address)
+                        # self.socket.sendto(str.encode(controlsMessage), address)
                         self.socket.sendto(str.encode(controlsMessage), (self.clientIP, self.port))
                         break
 
             except:
-                #print("loop")
+                # print("loop")
                 wheelInput = self.demoControllerInput()
                 if wheelInput != None:
-                    #self.socket.sendto(str.encode(str(wheelInput)), (self.clientIP, self.port))
+                    # self.socket.sendto(str.encode(str(wheelInput)), (self.clientIP, self.port))
                     self.socket.sendto(str.encode(str(wheelInput)), address)
                     print("msg sent: ", str.encode(str(wheelInput)))
+
 
 ServerUDP().start("Hello World!")
