@@ -38,5 +38,53 @@
       "brakingMax": -1,
       "brakingType": "linear"
     }
+  },
+
+  "x-box-controller": {
+    "controller": {
+      "axes": {
+        "0": "leftStickX",
+        "1": "leftStickY",
+        "2": "rightStickX",
+        "3": "rightStickY",
+        "4": "leftTrigger",
+        "5": "rightTrigger"
+      },
+
+      "buttons": {
+        "0": "A",
+        "1": "B",
+        "2": "X",
+        "3": "Y",
+        "4": "leftBumper",
+        "5": "rightBumper",
+        "6": "back",
+        "7": "start",
+        "8": "leftStickPress",
+        "9": "rightStickPress"
+      },
+
+      "calibration": {
+        "leftStickMinX": -1,
+        "leftStickMaxX": 1,
+        "leftStickMinY": -1,
+        "leftStickMaxY": 1,
+        "leftStickType": "linear",
+
+        "rightStickMinX": -1,
+        "rightStickMaxX": 1,
+        "rightStickMinY": -1,
+        "rightStickMaxY": 1,
+        "rightStickType": "linear",
+
+        "leftTriggerMin": 0,
+        "leftTriggerMax": 1,
+        "leftTriggerType": "linear",
+
+        "rightTriggerMin": 0,
+        "rightTriggerMax": 1,
+        "rightTriggerType": "linear"
+      }
+    }
   }
 }
