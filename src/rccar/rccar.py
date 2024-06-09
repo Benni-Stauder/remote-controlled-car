@@ -13,8 +13,19 @@ bufferSize = 1024
 
 debug = False
 
+# define maximum speeds for forward and reverse
+
+maxSpeedPos = 50
+maxSpeedNeg = 20
+
+# define standard drive mode as normal mode
+
+currentMode = 0
 
 async def receive_udp_message():
+    """
+    Receive all UDP messages sent by PC
+    """
     # Create a UDP socket
     UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     UDPClientSocket.setblocking(False)
@@ -37,6 +48,9 @@ async def receive_udp_message():
 
 
 def getSteering(jsonMsg):
+    """
+    Returns requested steering by PC
+    """
     if jsonMsg['type'] != 'control':
         return servo.value
     if debug:
@@ -49,7 +63,56 @@ def getSteering(jsonMsg):
     return steering
 
 
+def estimateSpeed(escValue):
+    """
+    Speed estimation based on calculated value of ESC
+    escValue = 0.5: no speed
+    escValue = 1: maximum speed
+    escValue = 0: minimum speed
+    """
+    if escValue > 0.5:
+        # Interpolating between 0.5 (stop) to 1 (full forward)
+        currentSpeed = (escValue - 0.5) * 2 * maxSpeedPos
+    elif escValue < 0.5:
+        # Interpolating between 0 (full reverse) to 0.5 (stop)
+        currentSpeed = (escValue - 0.5) * 2 * maxSpeedNeg
+    else:
+        # escValue == 0.5
+        currentSpeed = 0
+    
+    return currentSpeed
+
+
+def limitSpeed(reqEscValue, speedLimit):
+    """
+    Calculates new value for ESC based on configured speed limit
+    """
+    # Calculate the requested speed
+    reqSpeed = estimateSpeed(reqEscValue)
+    
+    # Limit the speed
+    if reqSpeed > speedLimit:
+        limitedSpeed = speedLimit
+    elif reqSpeed < -speedLimit:
+        limitedSpeed = -speedLimit
+    else:
+        limitedSpeed = reqSpeed
+    
+    # Find the corresponding ESC value for the limited speed
+    if limitedSpeed > 0:
+        limitedEscValue = (limitedSpeed / 50) / 2 + 0.5
+    elif limitedSpeed < 0:
+        limitedEscValue = (limitedSpeed / 20) / 2 + 0.5
+    else:
+        limitedEscValue = 0.5
+    
+    return limitedEscValue
+
+
 def getPower(jsonMsg):
+    """
+    Returns requested power by PC
+    """
     if jsonMsg['type'] != 'control':
         return esc.value
     if debug:
@@ -62,11 +125,47 @@ def getPower(jsonMsg):
     return 0
 
 
+def getSpeedLimit(jsonMsg):
+    """
+    Returns speed limit sent by PC
+    """
+    if jsonMsg['type'] != 'mode':
+        return maxSpeedPos
+    else:
+     return jsonMsg['values']['speedlimit']
+    
+
+def getMode(jsonMsg):
+    """
+    Returns current mode sent by PC
+    0 = standard mode
+    1 = children mode
+    2 = offroad mode
+    """
+    if jsonMsg['type'] != 'mode':
+        return currentMode
+    
+    return jsonMsg['values']['mode']
+    
+
 async def control_servo():
+    """
+    Sets servo and ESC to received value
+    """
     while True:
         jsonMsg = await receive_udp_message()
+
+        currentMode = getMode(jsonMsg)
+
         servo.value = getSteering(jsonMsg)
-        esc.value = getPower(jsonMsg)
+
+        if currentMode == 0:
+            esc.value = limitSpeed(getPower(jsonMsg), getSpeedLimit(jsonMsg))
+        elif currentMode == 1:
+            # Kindermodus implementieren
+            pass
+        elif currentMode == 2:
+            esc.value = limitSpeed(getPower(jsonMsg), 30)
 
 
 async def main():
