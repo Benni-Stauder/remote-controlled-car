@@ -171,6 +171,7 @@ def getMode(jsonMsg):
     0 = standard mode
     1 = children mode
     2 = offroad mode
+    3 = pro mode
     """
     if jsonMsg['type'] != 'mode':
         return currentMode
@@ -194,10 +195,45 @@ def createUDPMessage(type, value):
         return ""
     
 
+class TractionControl:
+    """
+    Class to emulate the idea of a traction control (because of no control loop more a acceleration limitation)
+    """
+    def __init__(self):
+            self.previous_speed = 0.5  # Initially stopped
+            self.max_acceleration = 0.001  # Maximum allowed acceleration per time step
+
+    def control_acceleration(self, currentSpeed, targetSpeed):
+            """
+            Limits acceleration to achieve a traction control effect
+            """
+            # Calculate the allowed change in speed based on max_acceleration
+            allowed_speed_change = self.max_acceleration
+            
+            # Calculate the difference between desired speed and current speed
+            speed_difference = targetSpeed - currentSpeed
+            
+            # Limit the speed change to the allowed speed change
+            if abs(speed_difference) > allowed_speed_change:
+                if speed_difference > 0:
+                    new_speed = currentSpeed + allowed_speed_change
+                else:
+                    new_speed = currentSpeed - allowed_speed_change
+            else:
+                new_speed = targetSpeed
+            
+            self.previous_speed = new_speed
+
+            return new_speed
+        
+
 async def control_servo():
     """
     Sets servo and ESC to received value
     """
+
+    tc = TractionControl()
+
     while True:
         jsonMsg = await receive_udp_message()
 
@@ -206,12 +242,17 @@ async def control_servo():
         servo.value = getSteering(jsonMsg)
 
         if currentMode == 0:
-            esc.value = limitSpeed(getPower(jsonMsg), getSpeedLimit(jsonMsg))
+            # standard mode
+            esc.value = tc.control_acceleration(esc.value, limitSpeed(getPower(jsonMsg), getSpeedLimit(jsonMsg)))
         elif currentMode == 1:
             # Kindermodus implementieren
             pass
         elif currentMode == 2:
-            esc.value = limitSpeed(getPower(jsonMsg), 30)
+            # offroad mode
+            esc.value = tc.control_acceleration(esc.value, limitSpeed(getPower(jsonMsg), 30))
+        elif currentMode == 3:
+            # pro mode: no TC and no speed limit
+            esc.value = getPower(jsonMsg)
 
         asyncio.run(send_udp_message(createUDPMessage('drivestatus', estimateSpeed(esc.value)), UDP_IP, UDP_PORT))
 
