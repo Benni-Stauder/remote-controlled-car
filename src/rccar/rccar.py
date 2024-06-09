@@ -22,6 +22,37 @@ maxSpeedNeg = 20
 
 currentMode = 0
 
+# define UDP connection
+
+UDP_IP = "10.3.141.1"
+UDP_PORT = 3107
+
+
+async def send_udp_message(message, dest_ip, dest_port):
+    """
+    Send a UDP message to a specific IP address and port
+    """
+    # Create a UDP socket
+    UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPClientSocket.setblocking(False)
+
+    # Encode the message to bytes
+    message_bytes = json.dumps(message).encode()
+
+    loop = asyncio.get_running_loop()
+    try:
+        # Send the message
+        await loop.sock_sendall(UDPClientSocket, message_bytes, (dest_ip, dest_port))
+        if debug:
+            print(f"Message sent to {dest_ip}:{dest_port}")
+    except socket.error as e:
+        # Handle the socket error
+        print(f"Error during UDP send message: {e}")
+    finally:
+        # Close the socket
+        UDPClientSocket.close()
+
+
 async def receive_udp_message():
     """
     Receive all UDP messages sent by PC
@@ -29,8 +60,7 @@ async def receive_udp_message():
     # Create a UDP socket
     UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     UDPClientSocket.setblocking(False)
-    # Bind the socket to all interfaces on a given port (replace `9999` with your port number)
-    UDPClientSocket.bind(("10.3.141.1", 3107))
+    UDPClientSocket.bind((UDP_IP, UDP_PORT))
 
     loop = asyncio.get_running_loop()
     while True:
@@ -146,6 +176,22 @@ def getMode(jsonMsg):
         return currentMode
     
     return jsonMsg['values']['mode']
+
+
+def createUDPMessage(type, value):
+    """
+    Creates UDP message in JSON format to be send to PC
+    """
+    if type == 'drivestatus':
+        message = {
+            "type": "drivestatus",
+            "values": {
+                "speed": value
+            }
+        }
+        return json.dumps(message)
+    else:
+        return ""
     
 
 async def control_servo():
@@ -166,6 +212,8 @@ async def control_servo():
             pass
         elif currentMode == 2:
             esc.value = limitSpeed(getPower(jsonMsg), 30)
+
+        asyncio.run(send_udp_message(createUDPMessage('drivestatus', estimateSpeed(esc.value)), UDP_IP, UDP_PORT))
 
 
 async def main():

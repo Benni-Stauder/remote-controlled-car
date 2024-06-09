@@ -2,6 +2,7 @@ import unittest
 
 import rccar
 
+import json
 
 class CarTest(unittest.TestCase):
     def test_steering_angle(self):
@@ -33,3 +34,12 @@ class CarTest(unittest.TestCase):
 
     def test_get_speed_limit(self):
         self.assertEqual(rccar.getMode(""), 30)
+
+    def test_create_udp_message(self):
+        result = rccar.createUDPMessage('drivestatus', 45)
+        expected = json.dumps({"type": "drivestatus", "values": {"speed": 45}})
+        self.assertEqual(result, expected)
+
+        result = rccar.createUDPMessage('invalidtype', 45)
+        expected = ""
+        self.assertEqual(result, expected)
