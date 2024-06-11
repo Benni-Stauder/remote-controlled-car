@@ -245,8 +245,8 @@ async def control_servo():
             # standard mode
             esc.value = tc.control_acceleration(esc.value, limitSpeed(getPower(jsonMsg), getSpeedLimit(jsonMsg)))
         elif currentMode == 1:
-            # Kindermodus implementieren
-            pass
+            # Children's mode implemented -> limited speed of 20 km/h
+            esc.value = tc.control_acceleration(esc.value, limitSpeed(getPower(jsonMsg), 20))
         elif currentMode == 2:
             # offroad mode
             esc.value = tc.control_acceleration(esc.value, limitSpeed(getPower(jsonMsg), 30))
