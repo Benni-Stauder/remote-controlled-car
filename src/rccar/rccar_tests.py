@@ -4,6 +4,8 @@ import rccar
 
 import json
 
+import time
+
 class CarTest(unittest.TestCase):
     def test_steering_angle(self):
         self.assertEqual(rccar.getSteering(""), 0)
@@ -43,3 +45,11 @@ class CarTest(unittest.TestCase):
         result = rccar.createUDPMessage('invalidtype', 45)
         expected = ""
         self.assertEqual(result, expected)
+
+    def test_full_brake(self):
+         rccar.esc.value = 0.7
+         rccar.full_brake()
+         self.assertEqual(rccar.esc.value, -1)
+        time.sleep(0.1)
+        self.assertEqual(rccar.esc.value, 0.5)
+        

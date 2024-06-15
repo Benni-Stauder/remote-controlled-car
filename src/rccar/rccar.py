@@ -2,6 +2,7 @@ import asyncio
 import socket
 import json
 from gpiozero import Servo
+import time
 
 # initialize PWM outputs for esc and steering servo
 
@@ -74,7 +75,8 @@ async def receive_udp_message():
         except socket.error:
             # Non-blocking socket would raise an error if no data is available
             await asyncio.sleep(0.1)  # Add a short delay to prevent CPU spin
-            continue
+            full_brake()
+            return None, False
 
 
 def getSteering(jsonMsg):
@@ -195,6 +197,13 @@ def createUDPMessage(type, value):
         return ""
     
 
+# Emergency braking if the connection is lost
+def full_brake():
+    
+    esc.value = -1
+    time.sleep(0.1)
+    esc.value = 0.5
+
 class TractionControl:
     """
     Class to emulate the idea of a traction control (because of no control loop more a acceleration limitation)
@@ -234,8 +243,15 @@ async def control_servo():
 
     tc = TractionControl()
 
+    connected = True
+
+
     while True:
         jsonMsg = await receive_udp_message()
+
+        if not connected:
+            full_brake()
+            break
 
         currentMode = getMode(jsonMsg)
 
@@ -257,11 +273,14 @@ async def control_servo():
         asyncio.run(send_udp_message(createUDPMessage('drivestatus', estimateSpeed(esc.value)), UDP_IP, UDP_PORT))
 
 
+
+
 async def main():
     try:
         await control_servo()
     except KeyboardInterrupt:
         print("Programm wurde gestoppt")
+        full_brake()
 
 
 # Run the main function
