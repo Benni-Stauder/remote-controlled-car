@@ -28,7 +28,7 @@ class InputDeviceListener:
             selectedDevice = self.connectedDevices[deviceIndex]
             self.initialized = self.inputDevice.initDevice(selectedDevice)
         else:
-            raise Exception("No connected input device found for index " + str(deviceIndex))
+           raise Exception("No connected input device found for index " + str(deviceIndex))
 
     async def run(self):
         """

@@ -13,7 +13,7 @@ class WebSocketServer:
         """
         Initializes the websocket server by loading ip and port from config.json.
         """
-        with open(config_path) as f:
+        with open("../../config.json") as f:
             serverConfig = json.load(f)
 
         self.host = serverConfig['frontend']['ip']
