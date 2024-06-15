@@ -1,23 +1,23 @@
-from SteeringWheel import *
+from InputDevice import *
 
 # Klasse instanziieren
-wheel = SteeringWheel()
+wheel = InputDevice()
 
 # Liste mit Namen aller verbundenen Joysticks
 connected = wheel.getConnectedJoysticks()
 
-# Beispiel: erstes Lenkrad/erster Joystick ausgewaehlt, Auswahl dann durch GUI
+# Beispiel: erstes Lenkrad/erster Controller ausgewaehlt, Auswahl dann durch GUI
 selected = 0
 
-# ausgewaehltes Lenkrad/Joystick initialisieren
-if wheel.initWheel(connected[selected]):
+# ausgewähltes Lenkrad/Joystick initialisieren
+if wheel.initDevice(connected[selected]):
     # aktueller Input muss gepolled werden
     while True:
         # Abfrage des aktuellen Inputs
         input = wheel.getInput()
 
         # Verarbeitung, nur wenn sich Input von Lenkrad geaendert hat
-        if input != None:
+        if input and input.get('type') != "NaN":
             print("input: ", input)
 
         # Abbruch, wenn Verbindung zu ausgewaehltem Lenkrad/Joystick verloren wird

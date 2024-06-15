@@ -1,4 +1,9 @@
 {
+  "frontend": {
+    "ip": "localhost",
+    "port": "8000"
+  },
+
   "backend": {
     "server": {
       "port": 3107,
@@ -6,15 +11,21 @@
     },
 
     "client": {
-      "ip": "10.3.141.1"
+      "ip": "192.168.1.112"
     }
   },
 
   "wheel": {
-    "axes": {
+    "axes_wheel": {
       "0": "steering",
       "1": "accelerating",
       "2": "braking"
+    },
+
+     "axes_controller": {
+      "0": "steering",
+      "5": "accelerating",
+      "4": "braking"
     },
 
     "buttons": {
@@ -31,9 +42,9 @@
       "steeringMax": 0.2,
       "maxDegrees": 90,
       "steeringType": "linear",
-      "accelerationMin": 1,
-      "accelerationMax": -1,
-      "accelerationType": "linear",
+      "acceleratingMin": 1,
+      "acceleratingMax": -1,
+      "acceleratingType": "linear",
       "brakingMin": 1,
       "brakingMax": -1,
       "brakingType": "linear"

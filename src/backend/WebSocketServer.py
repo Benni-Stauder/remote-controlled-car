@@ -1,0 +1,91 @@
+import asyncio
+import websockets
+import json
+from src.backend.SharedData import SharedData
+
+
+class WebSocketServer:
+    """
+    This class acts as a websocket server to send data between frontend and backend.
+    """
+
+    def __init__(self):
+        """
+        Initializes the websocket server by loading ip and port from config.json.
+        """
+        with open(config_path) as f:
+            serverConfig = json.load(f)
+
+        self.host = serverConfig['frontend']['ip']
+        self.port = serverConfig['frontend']['port']
+
+    async def start(self):
+        """
+        Starts the websocket server and waits for incoming connections.
+        """
+        server = await websockets.serve(self.handler, self.host, self.port)
+        await server.wait_closed()
+
+    async def handler(self, websocket, path):
+        """
+        Handles the server behavior for sending and receiving data.
+
+        :param websocket: The websocket connection.
+        :param path: The URL path is not used in this case, but required due to the websocket interface.
+        """
+        sender_task = asyncio.create_task(self.send_data(websocket))
+        receiver_task = asyncio.create_task(self.receive_data(websocket))
+
+        # Wait until either the sender or receiver task is completed
+        done, pending = await asyncio.wait(
+            [sender_task, receiver_task],
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+
+        # Cancel any pending tasks
+        for task in pending:
+            task.cancel()
+
+    @classmethod
+    async def send_data(cls, websocket):
+        """
+        Send speed and rpm (received from rc car) as well as acceleration and braking percentage (calculated from
+        controls input) to the frontend.
+
+        :param websocket: The websocket connection.
+        """
+        while True:
+            # Retrieve data from SharedData class
+            speed = (await SharedData.getOdometry())["speed"]
+            rpm = (await SharedData.getOdometry())["rpm"]
+            lateral_acceleration = (await SharedData.getControls())["accelerating"]
+            brake_percentage = (await SharedData.getControls())["braking"]
+
+            # Create a JSON message with the data
+            message = json.dumps({
+                "speed": speed,
+                "rpm": rpm,
+                "lateralAcceleration": lateral_acceleration,
+                "brakePercentage": brake_percentage
+            })
+
+            # Send the message to the client
+            await websocket.send(message)
+            await asyncio.sleep(0.5)
+
+    @classmethod
+    async def receive_data(cls, websocket):
+        """
+        Receives data from the frontend via websocket.
+
+        :param websocket: The websocket connection.
+        """
+        async for message in websocket:
+            # Parse the received JSON message
+            message = json.loads(message)
+            print("Received message from client:", message)
+
+            # Optionally update SharedData with received values
+            # await SharedData.update("maxSpeed", message["maxSpeed"])
+            # await SharedData.update("assistance", message["assistance"])
+            # await SharedData.update("drivingMode", message["drivingMode"])
