@@ -23,15 +23,15 @@ class ServerUDP:
         self.demo = demo
 
         # Load configurations from server
-        self.serverConfig = self.load_config('../../config.json')
+        self.serverConfig = self.load_config('../config.json')
 
         # Retrieve host IP address
         self.hostIP = self.get_host_ip()
 
         # Set socket parameters
         self.clientIP = self.serverConfig['client']['ip']
-        self.port = self.serverConfig['server']['port']
-        self.bufferSize = self.serverConfig['server']['bufferSize']
+        self.port = self.serverConfig['port']
+        self.bufferSize = self.serverConfig['bufferSize']
 
     @staticmethod
     def load_config(config_path):
@@ -128,13 +128,13 @@ class UDPServerProtocol:
         else:
             print(f"Message from unknown Client: {addr}")
 
-    async def process_data(self, data, addr):
+    async def process_data(self, data, address):
         """
         Processes the received binary stream by transforming them into separate values for speed and rpm.
         Periodically send controls stored in SharedData to the rc car.
 
         :param data: The received binary stream.
-        :param addr: The address of the client.
+        :param address: The address of the client.
         """
         try:
             # Convert received odometry data into a binary
@@ -153,8 +153,8 @@ class UDPServerProtocol:
             await SharedData.update("speed", speed)
 
             # Send current controls to the client
-            binaryControls = await SharedData.getBinaryControls()
-            self.transport.sendto(binaryControls.to_bytes(3, byteorder='big'), addr)
+            binaryControls = await SharedData.getBinaryData()
+            self.transport.sendto(binaryControls.to_bytes(5), address)
 
         except:
             traceback.print_exc()

@@ -6,14 +6,14 @@ from src.backend.SharedData import SharedData
 
 class WebSocketServer:
     """
-    This class acts as a websocket server to send data between frontend and backend.
+    This class acts as a websocket server to send data between frontend and src.
     """
 
     def __init__(self):
         """
         Initializes the websocket server by loading ip and port from config.json.
         """
-        with open("../../config.json") as f:
+        with open("../config.json") as f:
             serverConfig = json.load(f)
 
         self.host = serverConfig['frontend']['ip']

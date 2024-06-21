@@ -17,12 +17,18 @@ class SharedData:
     _controls = {
         "steering": 0,
         "accelerating": 0,
-        "braking": 0
+        "braking": 0,
+        "emergency_stop": 0
     }
 
     _odometry = {
         "speed": 0,
         "rpm": 0
+    }
+
+    _vehicle = {
+        "battery": 0,
+        "drive_mode": 0
     }
 
     @classmethod
@@ -37,28 +43,21 @@ class SharedData:
 
         async with cls._lock:
             # update values inside controls JSON
-            if key in ["steering", "accelerating", "braking"]:
+            if key in ["steering", "accelerating", "braking", "emergency_stop"]:
                 cls._controls[key] = value
 
             # update values inside odometry JSON
             elif key in ["speed", "rpm"]:
                 cls._odometry[key] = value
 
+            # update values inside vehicle JSON
+            elif key in ["battery", "drive_mode"]:
+                cls._vehicle[key] = value
+
             # return either success or failure
             else:
                 return cls.STATUS_NOT_FOUND
             return cls.STATUS_UPDATE_OK
-
-    @classmethod
-    async def getOdometry(cls):
-        """
-        Access the odometry JSON.
-
-        :return: Dictionary containing odometry data.
-        """
-
-        async with cls._lock:
-            return cls._odometry
 
     @classmethod
     async def getControls(cls):
@@ -72,26 +71,49 @@ class SharedData:
             return cls._controls
 
     @classmethod
-    async def getBinaryControls(cls):
+    async def getOdometry(cls):
+        """
+        Access the odometry JSON.
+
+        :return: Dictionary containing odometry data.
+        """
+
+        async with cls._lock:
+            return cls._odometry
+
+    @classmethod
+    async def getVehicleData(cls):
+        """
+        Access the vehicle JSON.
+
+        :return: Dictionary containing vehicle data.
+        """
+
+        async with cls._lock:
+            return cls._vehicle
+
+    @classmethod
+    async def getBinaryData(cls):
         """
         Create a single binary value for all controls. Use this format:
-            - Byte 2: steering
+            - Byte 0: steering
             - Byte 1: accelerating
-            - Byte 0: braking
+            - Byte 2: braking
+            - Byte 3: drive mode
+            - Byte 4: emergency stop
 
         :return: Integer representing of the binary controls data.
         """
 
         async with cls._lock:
-            # get the controls from JSON
+            emergencyStop = cls._vehicle["emergency_stop"]
+            driveMode = cls._vehicle["drive_mode"]
             steering = cls._controls["steering"]
             acceleration = cls._controls["accelerating"]
             braking = cls._controls["braking"]
 
-        print(f"Test s:{steering}, a:{acceleration}, b:{braking}")
-
         # shift steering values by 90 degrees to avoid negative values
         positiveSteering = steering + 90
 
-        # return steering, acceleration & braking as one binary message
-        return positiveSteering | (acceleration << 8) | (braking << 16)
+        # return steering, acceleration, braking, driving mode & emergency stop as one binary message
+        return (emergencyStop << 4*8) | (driveMode << 3*8) | (braking << 2*8) | (acceleration << 8) | positiveSteering

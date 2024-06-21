@@ -10,9 +10,9 @@ class InputDevice:
 
     def __init__(self) -> None:
         """Initialization of pygame joysticks and variables"""
-        with open('../../config.json', 'r') as f:
+        with open('../config.json') as f:
             wheel_config = json.load(f)
-        
+
         pygame.joystick.init()
         self.wheel_config = wheel_config['wheel']
         self.connected_devices = []
@@ -20,7 +20,7 @@ class InputDevice:
         self.sample_count = 0
         self.sample_rate = 1
 
-    def getConnectedJoysticks(self):
+    def getConnectedDevices(self):
         """Returns list with names of all joysticks that are connected to the computer"""
         self.connected_devices = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         names = [x.get_name() for x in self.connected_devices]

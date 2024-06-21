@@ -1,22 +1,22 @@
 import asyncio
 
-from src.backend.InputDeviceListener import InputDeviceListener
-from src.backend.Server import ServerUDP
+from src.input_device.InputDeviceListener import InputDeviceListener
+from src.backend.UDPServer import ServerUDP
 from src.backend.WebSocketServer import WebSocketServer
 
 
 async def main():
     """
-    This is the main function of the backend. It starts three asynchronous tasks for receiving controls from
-    input devices and communicating between the rc car, frontend and backend.
+    This is the main function of the src. It starts three asynchronous tasks for receiving controls from
+    input devices and communicating between the rc car, frontend and src.
     """
 
-    listener = InputDeviceListener()
+    deviceListener = InputDeviceListener()
     server = ServerUDP()
     websocket_server = WebSocketServer()
 
     await asyncio.gather(
-        listener.run(),
+        deviceListener.run(),
         server.start(),
         websocket_server.start()
     )
