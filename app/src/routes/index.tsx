@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ConnectionSteps } from "@/components/connector";
-import {  useState } from "react";
+import {useEffect, useState} from "react";
 import { Cog6ToothIcon } from "@heroicons/react/16/solid";
 import { VideoScreen } from "@/components/videoscreen";
 import { useStore } from "@/lib/store";
@@ -10,54 +10,88 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const default_steps: ConnectionSteps[] = [
-  {
-    step: "Connecting to Server",
-    status: "pending",
-  },
-  {
-    step: "Connecting Steering wheel",
-    status: "not_connected",
-  },
-  {
-    step: "Connecting to Webcam",
-    status: "not_connected",
-  },
-];
 
 export default function Home() {
+
+  const {actions: {setWebsocket, livedata: {setLiveData}}} = useStore()
+
+  const [data, setData] = useState({
+    speed: null,
+    rpm: null,
+    lateralAcceleration: null,
+    brakePercentage: null
+  });
+
+
+
+  useEffect(() => {
+    setLiveData(data.speed as unknown as number , data.rpm as unknown as number, data.lateralAcceleration as unknown as number, data.brakePercentage as unknown as number)
+  }, [data]);
+
+
+
+
   const {
-    state: { connecting, connected},
-    actions: { setConnecting, setConnected}
+    state: { websocket, connecting, connected, steps},
+    actions: { setConnecting, setConnected, setSteps, steps: {setStatus}}
   } = useStore();
-  const [steps, setSteps] = useState<ConnectionSteps[]>(default_steps);
+
+
+  function ConnectWebsocket () {
+    const ws = new WebSocket("ws://localhost:8000")
+
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established.");
+      setStatus(0,"connected")
+      setStatus(1,"connected")
+      setWebsocket(ws)
+    };
+
+    ws.onmessage = (event) => {
+      const newData = JSON.parse(event.data);
+      setData(prevData => ({
+        ...prevData,
+        ...newData
+      }));
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      const newSteps = [...steps]
+      setStatus(0,"error")
+      setStatus(1,"error")
+      setSteps(newSteps)
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket is closed now.");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }
 
 
   const connect = () => {
-    let currentStepIndex = 0;
     setConnecting(true)
-    setInterval(() => {
-      if (currentStepIndex < steps.length) {
-        const newSteps = [...steps];
-        newSteps[currentStepIndex].status = "pending";
+    ConnectWebsocket()
+    console.log("hello")
 
-        setSteps(newSteps);
 
-        setTimeout(() => {
-          const newSteps = [...steps];
-          newSteps[currentStepIndex].status = "connected";
-          setSteps(newSteps);
-          currentStepIndex++;
-        }, 1500);
+    console.log(steps[1])
+    if (websocket && websocket.readyState === websocket.CONNECTING) {
+      setStatus(0, "pending")
+      setStatus(1, "pending")
 
-      }
-      setConnected(steps.every(step => step.status === "connected"))
-      if (connected) {
-        console.log("we are connected")
-        setConnecting(false)
-        return;
-      }
-    }, 2000);
+    }
+
+    if (steps[1].status === "connected" && steps[2].status === "connected") {
+      setConnecting(false)
+      setConnected(true)
+    }
+
 
   }
   return (
@@ -70,7 +104,7 @@ export default function Home() {
             <Button
                 className="h-10"
                 variant="outline"
-                disabled={connecting}
+                disabled={connected}
                 onClick={connect}
             >
               Connect
@@ -78,7 +112,7 @@ export default function Home() {
             <Button
                 className="h-10"
                 variant="outline"
-                disabled={true}
+                disabled={!connected}
                 onClick={() => {
                   setConnecting(false);
                   setConnected(false);
@@ -107,7 +141,7 @@ export default function Home() {
         </div>
         <div className="flex-1 flex items-center justify-center p-4">
           <VideoScreen
-              steps={steps}
+
           />
         </div>
         <div className="flex items-center gap-2 w-full pb-5 pr-5 justify-end">

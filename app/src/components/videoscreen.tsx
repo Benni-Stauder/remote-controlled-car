@@ -1,33 +1,41 @@
 import { useStore } from "@/lib/store";
-import Connector, { ConnectionSteps } from "./connector";
+import Connector from "./connector";
 import Hls from 'hls.js';
 import {useEffect, useRef} from 'react';
 
-interface VideoScreenProps {
-  steps: ConnectionSteps[];
-}
+
 interface Props {
   preview?: boolean;
 }
 
 
-export const VideoScreen = ({
-  steps,
-}: VideoScreenProps) => {
-  const { state: { connected, connecting } } = useStore();
+export const VideoScreen = () => {
+  const { state: { connected, connecting , steps} , actions: { steps: {setStatus}}} = useStore();
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const video = videoRef.current as unknown as HTMLVideoElement;
-    if (!video) return;
-
     let hls: Hls;
+    hls = new Hls();
+    hls.loadSource('http://127.0.0.1:3030/stream.m3u8');
+
+
+
+
+     const video = videoRef.current as unknown as HTMLVideoElement;
+     if (!video) return;
+     video.controls = false
+     if (connected) {
+       hls.attachMedia(video);
+     }
+
 
     if (Hls.isSupported()) {
-      hls = new Hls();
-      hls.loadSource('http://127.0.0.1:3030/stream.m3u8');
-      hls.attachMedia(video);
+
+
+
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        console.log("connected")
+        setStatus(2,"connected")
         video.play().catch(
             error => {
           console.error('Autoplay was prevented');
@@ -53,7 +61,7 @@ export const VideoScreen = ({
         hls.destroy();
       }
     };
-  }, []);
+  }, [connected]);
 
   return (
       <div
@@ -64,23 +72,22 @@ export const VideoScreen = ({
 
 
         {/* Das Video wird nur angezeigt, wenn `connected` true ist */}
-        {connected && (
+
             <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
               {/*<div className="relative w-full h-full flex flex-col items-center justify-center">*/}
 
               {/*</div>*/}
               <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-                <video ref={videoRef} className="w-full h-full object-cover absolute "/>
-                <ConnectedScreen/>
+                <video ref={videoRef} muted className={`w-full h-full object-cover absolute `} />
+                {connected ? <ConnectedScreen/> : !connected && (connecting ? (
+                    <Connector test={steps}/>
+                ) : (
+                    <div>Not connected</div>
+                ))}
               </div>
             </div>
-        )}
-        {/* Alternativen, wenn nicht connected */}
-        {!connected && (connecting ? (
-            <Connector test={steps}/>
-        ) : (
-            <div>Not connected</div>
-        ))}
+
+
       </div>
   );
 
