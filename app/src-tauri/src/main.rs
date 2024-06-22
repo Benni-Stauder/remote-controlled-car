@@ -10,8 +10,12 @@ fn main() {
     rt.block_on(async {
         tauri::Builder::default()
             .setup(|app| {
-                 tokio::spawn(run_ffmpeg());
-                 tokio::spawn(run_warp_server());
+                // comment this line in for random test stream :)
+                //  tokio::spawn(run_ffmpeg("rtsp://807e9439d5ca.entrypoint.cloud.wowza.com:1935/app-rC94792j/068b9c9a_stream2"));
+
+                // comment this line out if u are using the test stream :)
+                tokio::spawn(run_ffmpeg("rtsp://10.3.141.1:8554/stream"));
+                tokio::spawn(run_warp_server());
                 Ok(())
             })
             .run(tauri::generate_context!())
@@ -27,11 +31,12 @@ async fn run_warp_server() {
     let output_path = output_path.join("swe_car");
     let routes = warp::fs::dir(output_path); // Serve files from the public directory
     let cors = warp::cors().allow_any_origin().build();
-    warp::serve(routes.with(cors)).run(([127, 0, 0, 1], 3030)).await;
+    warp::serve(routes.with(cors))
+        .run(([127, 0, 0, 1], 3030))
+        .await;
 }
 
-async fn run_ffmpeg() {
-    let source = "rtsp://10.3.141.1:8554/stream";
+async fn run_ffmpeg(source: &str) {
     let output_path = tauri::api::path::cache_dir().expect("unable to get cache dir");
     let output_path = output_path.join("swe_car");
     if !output_path.exists() {
@@ -69,4 +74,36 @@ async fn run_ffmpeg() {
         .expect("failed to execute process");
 
     println!("FFmpeg process finished with output: {:?}", output);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use tauri::api::path::cache_dir;
+    use warp::hyper::StatusCode;
+    use warp::test::request;
+
+    #[tokio::test]
+    async fn http_server_is_reachable() {
+        let output_path = cache_dir()
+            .expect("unable to get cache dir")
+            .join("swe_car");
+        if !output_path.exists() {
+            fs::create_dir_all(&output_path).expect("failed to create dirs");
+        }
+
+        let routes = warp::fs::dir(output_path.clone());
+        let cors = warp::cors().allow_any_origin().build();
+        let server = warp::serve(routes.with(cors)).run(([127, 0, 0, 1], 3030));
+
+        tokio::spawn(server);
+
+        let resp = request()
+            .method("GET")
+            .path("/stream.m3u8")
+            .reply(&warp::fs::dir(output_path.clone()))
+            .await;
+
+        assert_eq!(resp.status(), StatusCode::OK);
+    }
 }
