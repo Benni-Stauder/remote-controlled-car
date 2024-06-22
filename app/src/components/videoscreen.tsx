@@ -17,21 +17,17 @@ export const VideoScreen = ({
   const { state: { connected, connecting } } = useStore();
   const videoRef = useRef(null);
 
-  
-
   useEffect(() => {
     const video = videoRef.current as unknown as HTMLVideoElement;
     if (!video) return;
 
     let hls: Hls;
-    //hier slalsl
 
     if (Hls.isSupported()) {
       hls = new Hls();
       hls.loadSource('http://127.0.0.1:3030/stream.m3u8');
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log("fgdhsjaklksjdhfdjskal");
         video.play().catch(
             error => {
           console.error('Autoplay was prevented');
@@ -41,7 +37,6 @@ export const VideoScreen = ({
               video.addEventListener('click', function() {
                 video.play(); // Start playback on click
               });
-          // Handle further UI or state changes if needed
         });
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -49,7 +44,6 @@ export const VideoScreen = ({
       video.addEventListener('loadedmetadata', () => {
         video.play().catch(() => {
           console.error('Autoplay was prevented');
-          // Handle further UI or state changes if needed
         });
       });
     }
@@ -67,19 +61,23 @@ export const VideoScreen = ({
             "relative flex h-[100%] aspect-video overflow-hidden items-center justify-center bg-muted rounded-md"
           }
       >
+
+
         {/* Das Video wird nur angezeigt, wenn `connected` true ist */}
         {connected && (
             <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
-              <video ref={videoRef} controls muted className="w-full h-full object-cover absolute z-[-1]" />
-              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+              {/*<div className="relative w-full h-full flex flex-col items-center justify-center">*/}
 
-              <ConnectedScreen/>
+              {/*</div>*/}
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+                <video ref={videoRef} className="w-full h-full object-cover absolute "/>
+                <ConnectedScreen/>
               </div>
             </div>
         )}
         {/* Alternativen, wenn nicht connected */}
         {!connected && (connecting ? (
-            <Connector test={steps} />
+            <Connector test={steps}/>
         ) : (
             <div>Not connected</div>
         ))}
