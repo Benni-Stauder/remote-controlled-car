@@ -80,13 +80,13 @@ export default function Home() {
                 variant="outline"
                 disabled={true}
                 onClick={() => {
-                  // setConnecting(false);
-                  // setConnected(false);
-                  // const new_steps = steps.map(
-                  //   (step) =>
-                  //     ({ ...step, status: "not_connected" }) as ConnectionSteps
-                  // );
-                  // setSteps(new_steps);
+                  setConnecting(false);
+                  setConnected(false);
+                  const new_steps = steps.map(
+                    (step) =>
+                      ({ ...step, status: "not_connected" }) as ConnectionSteps
+                  );
+                  setSteps(new_steps);
                 }}
             >
               Disconnect
