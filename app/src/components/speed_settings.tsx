@@ -40,10 +40,10 @@ export default function SpeedSettings() {
                     max={isChild ? 50 : 100}
                     step={1}
                 />
-                <Input
+                <input
                     type="number"
                     value={speed}
-
+                    className={"flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors "}
                     onChange={(event) => {
                         const websocketMessage = {
                             "maxSpeed" : event.target.value,
