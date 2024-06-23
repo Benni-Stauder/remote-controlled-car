@@ -11,16 +11,10 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as StreamtestImport } from './routes/streamtest'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const StreamtestRoute = StreamtestImport.update({
-  path: '/streamtest',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const SettingsRoute = SettingsImport.update({
   path: '/settings',
@@ -44,19 +38,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsImport
       parentRoute: typeof rootRoute
     }
-    '/streamtest': {
-      preLoaderRoute: typeof StreamtestImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
-  IndexRoute,
-  SettingsRoute,
-  StreamtestRoute,
-])
+export const routeTree = rootRoute.addChildren([IndexRoute, SettingsRoute])
 
 /* prettier-ignore-end */
