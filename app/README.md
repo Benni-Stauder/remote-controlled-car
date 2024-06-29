@@ -215,20 +215,37 @@ wird unterteilt in speed_settings, assistance_system und dashboard_customization
 
 Hier kann der Nutzer die maximal mögliche Geschwindigkeit, die das RC-Auto fahren kann, einstellen. Sobald diese geändert wird, egal, ob durch Eingabe einer Zahl in das Inputfeld oder durch Bewegen des "Sliders", wird diese Information über die Websocket-Verbindung an das Backend gesendet.
 
-### assistance_system
+Die maximal einstellbare Geschwindigkeit beträgt 100 km/h, beziehungsweise 50 km/h, sollte sich das RC-Auto im "Child"-Modus befinden.
+
+
+### assistance_system.tsx
 
 Dieses Component besteht aus einer Überschrift "Driver Assistance Systems" und einem "Switch", durch welchen sich die Fahrerassistenzsysteme an- und ausschalten lassen. Bei einer Änderung des Schalters wird dies ebenfalls an das Backend gesendet und die Information weiter verarbeitet.
+
 Wichtig zu Erwähnen ist hier, dass ein Ausschalten der Assistenzsysteme nur möglich ist, wenn sich das RC-Auto im Modus "Pro" befindet.
+
+
+### dashboard_customization.tsx
+
+In diesem Component kann der Nutzer sein "Dashboard" verändern. Es lässt sich eine Auswahl an möglichen Anzeigeoptionen treffen. Zu Beginn werden lediglich die Geschwindigkeit (Velocity), die Maximalgeschwindigkeit (Max Speed) und die Drehzahl (Rpm) angezeigt. Zusätzlich dazu stellt das RC-Auto jedoch Daten zur Beschleunigung und Bremspedalstellung zur Verfügung, die ebenfalls angezeigt werden können. 
+Der Schalter "Map", also eine Live-Karte ist in der aktuellen leider noch nicht möglich, da das RC-Auto noch über kein GPS-Signal verfügt.
+
+Diese Komponente ist im Kindermodus "Child" ebenfalls nicht verfügbar, um die Anzeige und damit das Fahrerlebnis möglichst einfacher zu halten.
+
+
+### dashboard_preview.tsx
+
+Die zuvor erläuterten Anzeigeoptionen des Dashboards lassen sich in diesem Component direkt einsehen. Die Komponente besteht aus einem "Miniatur"-Videoscreen, der sich, je nach Auswahl in dashboard_customization.tsx, aktualisiert.
+So bekommt der Nutzer eine genaue Vorstellung, wie der von ihm aufgebaute Videoscreen der Anwendung aussehen wird.
 
 ## Tauri und Rust
 
-Tauri ist ein Crossplattform (Mac, Windows und Linux) Desktopbundler, welcher es uns ermöglicht,
+Tauri ist ein Crossplattform (Mac, Windows und Linux) Desktopbundler, welcher es ermöglicht,
 Webanwendungen als Executables zu bauen, und diese als "normale" Anwendungen auf unserem Computer zu starten.
 Dies erfolgt mithilfe der Webview Plattform. Innerhalb unserer Anwendung laufen zwei Prozesse, der Webview Prozess, zum Anzeigen der UI, 
 und der Tauri Prozess, mit dem durch Eventemitter, Funktionen aus dem Frontend in dem Tauri-Rust Backend aufgerufen werden können.
 So wird zum Beispiel in unserer Anwendung ein RSP-Stream in ein für das Frontend nutzbares Format geändert.
 
-[//]: # (TODO: add main.rs)
 
 ### Stream 
 
