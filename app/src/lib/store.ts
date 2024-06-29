@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import {ConnectionSteps} from "@/components/connector.tsx";
 
 
 type State = {
-  state: {
+  state: { counter: number,
     websocket: WebSocket | null;
+    steps: ConnectionSteps[],
     connected: boolean;
     connecting: boolean;
     settings: {
@@ -31,6 +33,10 @@ type State = {
 
 type Actions = {
   actions: {
+      setSteps: (x: ConnectionSteps[]) => void;
+      steps: {
+          setStatus: (index: number, status: "connected" | "pending" | "error") => void
+      },
     setWebsocket: (ws: WebSocket) => void;
     setConnecting: (connecting: boolean) => void;
     setConnected: (connected: boolean) => void;
@@ -56,6 +62,21 @@ type Actions = {
 export const useStore = create<State & Actions>()(
     immer((set) => ({
       state: {
+          counter: 0,
+          steps: [
+              {
+                  step: "Connecting to Server",
+                  status: "pending",
+              },
+              {
+                  step: "Connecting Steering wheel",
+                  status: "pending",
+              },
+              {
+                  step: "Connecting to Webcam",
+                  status: "not_connected",
+              },
+          ],
         websocket: new WebSocket(""),
         connected: false,
         connecting: false,
@@ -81,7 +102,18 @@ export const useStore = create<State & Actions>()(
       },
 
       actions: {
-
+        setSteps: (x) => set((state) => {
+            state.state.steps = x
+        }),
+          steps: {
+            setStatus: (index, status) => set((state) => {
+                state.state.steps[index].status = status
+                if (state.state.steps[0].status === "connected" && state.state.steps[1].status === "connected" && state.state.steps[2].status === "connected") {
+                    state.state.connected = true
+                    state.state.connecting = false
+                }
+            })
+          },
         setWebsocket: (websocket) => set((state) => {state.state.websocket = websocket}),
         setConnecting: (connecting) =>
             set((state) => {

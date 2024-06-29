@@ -14,8 +14,7 @@ class WebSocketServer:
         """
          Initializes the websocket server by loading ip address and port from config.json.
         """
-
-        with open("../config.json") as f:
+        with open("../../config.json") as f:
             serverConfig = json.load(f)
 
             self.host = serverConfig['frontend']['ip']
@@ -87,16 +86,22 @@ class WebSocketServer:
         """
 
         async for message in websocket:
-            message = json.loads(message)
+            data = json.loads(message)
+            message_from_client = {
+                "maxSpeed": data.get("maxSpeed"),
+                "mode": data.get("mode"),
+                "assistance": data.get("assistance"),
+            }
+            print("message: ", json.dumps(message_from_client))
+            await SharedData.update("maxSpeed", message_from_client["maxSpeed"])
+            await SharedData.update("assistance", message_from_client["assistance"])
+            await SharedData.update("drivingMode", message_from_client["mode"])
 
             # extract the expected values from the received message
             max_speed = message.get("maxSpeed")
             drive_mode = message.get("mode")
             assistance = message.get("assistance")
 
-            # Update the shared data
-            await SharedData.update("max_speed", max_speed)
-            await SharedData.update("drive_mode", drive_mode)
-            await SharedData.update("assistance", assistance)
-
-            print(f"Maximum Speed: {max_speed}, Driving Mode: {drive_mode}, Assistance: {assistance}")
+if __name__ == "__main__":
+    websocket_server = WebSocketServer()
+    asyncio.run(websocket_server.start())
