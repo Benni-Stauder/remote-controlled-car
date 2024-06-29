@@ -7,13 +7,13 @@
 4. [Verbindung zum Backend](#verbindung-zum-backend)
 5. [Frontend-Komponenten](#frontend-komponenten)
 6. [Tauri und Rust](#tauri-und-rust)
-7. [Mitwirken](#mitwirken)
-
 
 
 ## Einführung
+<p style="text-align: justify;">
 Dieses Projekt ist eine Softwarelösung, die es ermöglicht, ein Auto per Racing Lenkrad zu steuern und einen Live-Video-Stream im Frontend anzuzeigen. 
 
+<p style="text-align: justify;">
 Diese Dokumentation bezieht sich lediglich auf das Frontend des Projektes und seine Funktionalitäten.
 
 ### Technologie-Stack
