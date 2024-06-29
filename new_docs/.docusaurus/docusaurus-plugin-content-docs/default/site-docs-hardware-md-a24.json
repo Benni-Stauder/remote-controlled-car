@@ -1,0 +1,23 @@
+{
+  "id": "hardware",
+  "title": "Hardware-Setup",
+  "description": "Anschließen der USB-Webcam an den Raspberry Pi",
+  "source": "@site/docs/hardware.md",
+  "sourceDirName": ".",
+  "slug": "/hardware",
+  "permalink": "/docs/hardware",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Getting Started",
+    "permalink": "/docs/getting-started"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/software/"
+  }
+}

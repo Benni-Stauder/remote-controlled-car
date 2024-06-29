@@ -13,3 +13,4 @@ venv
 __pycache__
 website/node_modules
 .DS_Store
+new_docs/node_modules

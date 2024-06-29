@@ -1,0 +1,19 @@
+{
+  "id": "getting-started",
+  "title": "Erste Schritte",
+  "description": "Produktübersicht",
+  "source": "@site/docs/getting-started.md",
+  "sourceDirName": ".",
+  "slug": "/getting-started",
+  "permalink": "/docs/getting-started",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "next": {
+    "title": "Hardware",
+    "permalink": "/docs/hardware"
+  }
+}

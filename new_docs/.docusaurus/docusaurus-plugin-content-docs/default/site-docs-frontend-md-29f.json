@@ -1,0 +1,23 @@
+{
+  "id": "frontend",
+  "title": "Frontend",
+  "description": "Einführung",
+  "source": "@site/docs/frontend.md",
+  "sourceDirName": ".",
+  "slug": "/frontend",
+  "permalink": "/docs/frontend",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Demo",
+    "permalink": "/docs/software/demo"
+  },
+  "next": {
+    "title": "RC Car",
+    "permalink": "/docs/rc-car"
+  }
+}

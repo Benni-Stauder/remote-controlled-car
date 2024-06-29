@@ -1,0 +1,23 @@
+{
+  "id": "software/input",
+  "title": "Input Device Directory",
+  "description": "Overview",
+  "source": "@site/docs/software/input.md",
+  "sourceDirName": "software",
+  "slug": "/software/input",
+  "permalink": "/docs/software/input",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Backend",
+    "permalink": "/docs/software/backend"
+  },
+  "next": {
+    "title": "Demo",
+    "permalink": "/docs/software/demo"
+  }
+}

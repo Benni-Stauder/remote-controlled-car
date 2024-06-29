@@ -28,9 +28,30 @@ const sidebars: SidebarsConfig = {
       label: "Hardware"
     },
     {
-      type: "doc",
-      id: "software",
-      label: "Software"
+      type: "category",
+      label: "Software",
+      items: [
+        {
+          type: "doc",
+          id: "software/index",
+          label: "Overview"
+        },
+        {
+          type: "doc",
+          id: "software/backend",
+          label: "Backend"
+        },
+        {
+          type: "doc",
+          id: "software/input",
+          label: "Input"
+        },
+        {
+          type: "doc",
+          id: "software/demo",
+          label: "Demo"
+        },
+      ]
     },
     {
       type: "doc",

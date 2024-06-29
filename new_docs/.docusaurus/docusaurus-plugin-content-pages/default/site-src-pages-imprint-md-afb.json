@@ -1,0 +1,13 @@
+{
+  "type": "mdx",
+  "permalink": "/imprint",
+  "source": "@site/src/pages/imprint.md",
+  "title": "Imprint",
+  "description": "Imprint",
+  "frontMatter": {
+    "title": "Imprint",
+    "description": "Imprint",
+    "hide_table_of_contents": true
+  },
+  "unlisted": false
+}

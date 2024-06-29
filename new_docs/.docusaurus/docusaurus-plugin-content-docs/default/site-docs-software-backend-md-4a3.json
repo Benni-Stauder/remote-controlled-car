@@ -1,0 +1,23 @@
+{
+  "id": "software/backend",
+  "title": "Backend Directory",
+  "description": "The backend is designed to manage communication and data flow between the frontend and the RC car. It ensures that all data is correctly shared among the different components of this project. Additionally, the backend handles all incoming control inputs and stores them to be accessible for all components of the backend.",
+  "source": "@site/docs/software/backend.md",
+  "sourceDirName": "software",
+  "slug": "/software/backend",
+  "permalink": "/docs/software/backend",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/software/"
+  },
+  "next": {
+    "title": "Input",
+    "permalink": "/docs/software/input"
+  }
+}

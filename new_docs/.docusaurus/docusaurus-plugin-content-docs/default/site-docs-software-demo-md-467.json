@@ -1,0 +1,23 @@
+{
+  "id": "software/demo",
+  "title": "Demo Simulator Directory",
+  "description": "Overview",
+  "source": "@site/docs/software/demo.md",
+  "sourceDirName": "software",
+  "slug": "/software/demo",
+  "permalink": "/docs/software/demo",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Input",
+    "permalink": "/docs/software/input"
+  },
+  "next": {
+    "title": "Frontend",
+    "permalink": "/docs/frontend"
+  }
+}

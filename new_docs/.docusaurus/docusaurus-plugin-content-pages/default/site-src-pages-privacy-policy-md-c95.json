@@ -1,0 +1,13 @@
+{
+  "type": "mdx",
+  "permalink": "/privacy-policy",
+  "source": "@site/src/pages/privacy-policy.md",
+  "title": "Privacy Policy",
+  "description": "Privacy Policy",
+  "frontMatter": {
+    "title": "Privacy Policy",
+    "description": "Privacy Policy",
+    "hide_table_of_contents": true
+  },
+  "unlisted": false
+}
