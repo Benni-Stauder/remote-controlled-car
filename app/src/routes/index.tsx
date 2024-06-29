@@ -5,6 +5,8 @@ import { useStore } from "@/lib/store";
 import { Cog6ToothIcon } from "@heroicons/react/16/solid";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import {toast} from "@/components/ui/use-toast.ts";
+
 
 export const Route = createFileRoute("/")({
 	component: Home,
@@ -24,7 +26,6 @@ export default function Home() {
 		lateralAcceleration: null,
 		brakePercentage: null,
 	});
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		setLiveData(
 			data.speed as unknown as number,
@@ -82,9 +83,8 @@ export default function Home() {
 	const connect = () => {
 		setConnecting(true);
 		ConnectWebsocket();
-		console.log("hello");
+		setTimeout(() => {setStatus(2, "connected")}, 3000)
 
-		console.log(steps[1]);
 		if (websocket && websocket.readyState === websocket.CONNECTING) {
 			setStatus(0, "pending");
 			setStatus(1, "pending");
@@ -145,8 +145,17 @@ export default function Home() {
 			</div>
 			<div className="flex items-center gap-2 w-full pb-5 pr-5 justify-end">
 				<Link
-					to="/settings"
+					to={!connected ? "/" : "/settings"}
 					className="flex space-x-4 justify-evenly items-center h-auto"
+					onClick={() => {
+						if (!connected) {
+
+							toast({
+								title: "Not Connected !",
+								description: "Please connect the devices in order to access the settings",
+							});
+						}
+					}}
 				>
 					<Cog6ToothIcon className="h-10 w-10 pl-1" />
 				</Link>
@@ -155,11 +164,8 @@ export default function Home() {
 	);
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-// biome-ignore lint/suspicious/noExplicitAny : <explanation>
 function WifiIcon(props: any) {
 	return (
-		//biome-ignore lint/a11y/noSvgWithoutTitle : lalala
 		<svg
 			{...props}
 			xmlns="http://www.w3.org/2000/svg"

@@ -74,7 +74,7 @@ export const useStore = create<State & Actions>()(
               },
               {
                   step: "Connecting to Webcam",
-                  status: "pending",
+                  status: "not_connected",
               },
           ],
         websocket: new WebSocket(""),

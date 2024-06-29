@@ -63,20 +63,31 @@ Dieses Projekt beinhaltet die Software für das Ansteuern eines RC-Autos.
     git clone https://github.com/benutzername/repo-name.git
     cd app
     ```
+2. node installieren [download](https://nodejs.org/en)
 
-2. Rust installieren (falls noch nicht installiert):
+3. Rust installieren (falls noch nicht installiert):
    Folgen Sie den Anweisungen auf [rust-lang.org](https://www.rust-lang.org/).
+   (Bei Windows wird C++ Compiler hierfür benötigt, auswählbar in VS Installation)
+4. pnpm installieren
+   ```
+   npm i -g pnpm
+   ```
 
-
-3. Abhängigkeiten installieren:
+5. Abhängigkeiten installieren:
     ```bash
     pnpm i
     ```
 
-4. Tauri-App starten:
-    ```bash
-    pnpm run tauri dev
+6. Tauri-App bauen:
+   hier wird die App lediglich gebaut (gebuilded), nicht gestartet
+   ```bash
+    pnpm tauri build
     ```
+7. Tauri-App starten:
+    ```bash
+    pnpm tauri dev
+    ```
+
    
 ## Nutzung
 Nach der Installation und dem Start der jeweiligen Komponenten können Sie die Anwendungen nutzen. Weitere Informationen zur Nutzung und API-Dokumentation finden Sie im jeweiligen Unterverzeichnis.

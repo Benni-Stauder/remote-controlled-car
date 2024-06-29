@@ -14,7 +14,7 @@ class WebSocketServer:
         """
          Initializes the websocket server by loading ip and port from config.json.
         """
-        with open("../config.json") as f:
+        with open("../../config.json") as f:
             serverConfig = json.load(f)
 
             self.host = serverConfig['frontend']['ip']
@@ -95,7 +95,7 @@ class WebSocketServer:
             print("message: ", json.dumps(message_from_client))
             await SharedData.update("maxSpeed", message_from_client["maxSpeed"])
             await SharedData.update("assistance", message_from_client["assistance"])
-            await SharedData.update("drivingMode", message_from_client["drivingMode"])
+            await SharedData.update("drivingMode", message_from_client["mode"])
 
 
 if __name__ == "__main__":

@@ -24,7 +24,6 @@ export default function DashboardCustomization() {
 		setMaxSpeed,
 	} = useStore((state) => state.actions.settings.dashboard);
 	const isChild = mode === "child";
-	const websocketRef = useRef();
 
 	return (
 		<div className={`grid p-5 ${isChild ? "opacity-50" : ""}`}>

@@ -30,8 +30,8 @@ export const VideoScreen = () => {
 
 		if (Hls.isSupported()) {
 			hls.on(Hls.Events.MANIFEST_PARSED, () => {
-				console.log("connected");
-				setStatus(2, "connected");
+
+				setStatus(2, "pending");
 				video.play().catch((error) => {
 					console.error("Autoplay was prevented");
 					console.error(error);
@@ -67,9 +67,7 @@ export const VideoScreen = () => {
 			{/* Das Video wird nur angezeigt, wenn `connected` true ist */}
 
 			<div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
-				{/*<div className="relative w-full h-full flex flex-col items-center justify-center">*/}
 
-				{/*</div>*/}
 				<div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
 					<video
 						ref={videoRef}

@@ -13,7 +13,6 @@ export default function SpeedSettings() {
 		},
 	} = useStore();
 	useEffect(() => {
-		// websocket.send(JSON.stringify(websocketMessage))
 	}, [speed]);
 	const isChild = mode === "child";
 
