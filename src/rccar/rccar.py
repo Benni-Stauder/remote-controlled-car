@@ -84,7 +84,7 @@ def getSteering(jsonMsg):
     Returns requested steering by PC
     """
     if jsonMsg['type'] != 'control':
-        return servo.value
+        return servo.value          # if no new value return current one
     if debug:
         print("Raw Steering Angle: ", jsonMsg['values']['steering'])
     steering = jsonMsg['values']['steering']
@@ -146,7 +146,7 @@ def getPower(jsonMsg):
     Returns requested power by PC
     """
     if jsonMsg['type'] != 'control':
-        return esc.value
+        return esc.value            # if no new value return current one
     if debug:
         print("Raw Accel: ", jsonMsg['values']['accelerating'])
         print("Raw Braking: ", jsonMsg['values']['braking'])
