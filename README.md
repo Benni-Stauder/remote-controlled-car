@@ -13,7 +13,11 @@
 5. [Lizenz](#lizenz)
 
 ## Einführung
-Dieses Projekt beinhaltet die Software für das Ansteuern eines RC-Autos.
+Dieses Projekt umfasst die Software für das Ansteuern eines RC-Autos. 
+
+Eine ausführliche Dokumentation kann der Webseite im Ordner `website` entnommen werden.
+Um diese Webseite zu laden, muss der Befehl `npm start` im zugehörigen Ordner ausgeführt werden.
+
 ## Installationsanleitung
 
 #### Voraussetzungen
@@ -30,11 +34,10 @@ Dieses Projekt beinhaltet die Software für das Ansteuern eines RC-Autos.
 
 2. Abhängigkeiten installieren:
     ```bash
-   
     pnpm i
     ```
 
-### WebSocket-Server 
+### WebSocket- & UDP-Server 
 
 1. Venv activieren
    ```bash

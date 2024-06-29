@@ -17,7 +17,7 @@ const FeatureList: FeatureItem[] = [
         Svg: require('@site/static/img/undraw_surveillance_re_8tkl.svg').default,
         description: (
             <>
-                <Translate id={"feat_camera"}>Das RC-Auto ist mit einer hochauflösenden Kamera ausgestattet, die einen Echtzeit-Videostream und Aufnahmemöglichkeiten bietet, um die Navigation und das Erlebnis zu verbessern.</Translate>
+                <Translate id={"feat_camera"}>Das RC-Auto ist mit einer Live-Kamera ausgestattet, die einen Echtzeit-Videostream und Aufnahmemöglichkeiten bietet.</Translate>
             </>
         ),
     },
@@ -26,16 +26,16 @@ const FeatureList: FeatureItem[] = [
         Svg: require('@site/static/img/undraw_server_cluster_jwwq.svg').default,
         description: (
             <>
-                <Translate id={"feat_control"}>Unser Steuerungssystem ermöglicht einen nahtlosen Betrieb von verschiedenen Geräten, einschließlich Fernbedienungen und Simulationsanlagen, und gewährleistet eine präzise Handhabung unter allen Bedingungen.</Translate>
+                <Translate id={"feat_control"}>Unsere Steuerung unterstützt verschiedenen Geräten, wie Controller und Gaming-Lenkräder.</Translate>
                 </>
         ),
     },
     {
-        title: translate({message: 'Erhöhte Haltbarkeit', id: "feat_durabilty_header"}),
+        title: translate({message: 'Open Source', id: "feat_durabilty_header"}),
         Svg: require('@site/static/img/undraw_towing_re_wesa.svg').default,
         description: (
             <>
-                <Translate id={"feat_durability"}>Unsere RC-Autos sind für den intensiven Einsatz konzipiert und verfügen über eine robuste Konstruktion mit wetterbeständigen Materialien, die für alle Gelände und Bedingungen geeignet sind.</Translate></>
+                <Translate id={"feat_durability"}>Dieses Projekt ist gänzlich Open Source und bietet für interessierte Nutzer daher die Möglichkeit, nach Belieben Änderungen vorzunehmen.</Translate></>
         ),
     },
 ];
