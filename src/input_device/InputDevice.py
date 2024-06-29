@@ -5,14 +5,14 @@ with contextlib.redirect_stdout(None):
     import pygame
 
 
-class SteeringWheel:
-    """Class for steering wheel connection"""
+class InputDevice:
+    """Class for input device connection"""
 
     def __init__(self) -> None:
         """Initialization of pygame joysticks and variables"""
-        with open('../../config.json', 'r') as f:
+        with open('../config.json') as f:
             wheel_config = json.load(f)
-        
+
         pygame.joystick.init()
         self.wheel_config = wheel_config['wheel']
         self.connected_devices = []
@@ -20,14 +20,14 @@ class SteeringWheel:
         self.sample_count = 0
         self.sample_rate = 1
 
-    def getConnectedJoysticks(self):
+    def getConnectedDevices(self):
         """Returns list with names of all joysticks that are connected to the computer"""
         self.connected_devices = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         names = [x.get_name() for x in self.connected_devices]
         return names
     
-    def initWheel(self, name: str):
-        """Initializes wheel with respective name
+    def initDevice(self, name: str):
+        """Initializes input device with respective name
 
         name: name of joystick
 
@@ -67,10 +67,15 @@ class SteeringWheel:
             
             if event.type == pygame.JOYAXISMOTION:
                 if self.sample_count > self.sample_rate:
+                    is_controller = False
                     axis = event.axis
-                    print("axis: ", axis)
+
                     try:
-                        axis = self.wheel_config['axes'][str(axis)]
+                        if "controller" in self.device_used.get_name().lower():
+                            axis = self.wheel_config['axes_controller'][str(axis)]
+                            is_controller = True
+                        else:
+                            axis = self.wheel_config['axes_wheel'][str(axis)]
                     except:
                         axis = "NaN"
                     value = event.value
@@ -82,26 +87,24 @@ class SteeringWheel:
                             degMax = self.wheel_config["calibration"]["maxDegrees"]
                             value = int(round(degMax/(max-min)*value, 0))
 
-                    if axis == "accelerating":
-                        if self.wheel_config["calibration"]["accelerationType"] == "linear":
-                            print("value: ", value)
-                            min = self.wheel_config["calibration"]["accelerationMin"]
-                            max = self.wheel_config["calibration"]["accelerationMax"]
-                            value = int(round(-100/(min-max)*(value)+50, 0))
-                            if value < 0:
-                                value = 0
-                            if value > 100:
-                                value = 100
+                            # ensure steering values between -90 and 90 degrees for controllers
+                            if is_controller:
+                                value /= 5
 
-                    if axis == "braking":
-                        if self.wheel_config["calibration"]["brakingType"] == "linear":
-                            min = self.wheel_config["calibration"]["brakingMin"]
-                            max = self.wheel_config["calibration"]["brakingMax"]
+                    if axis in ["accelerating", "braking"]:
+                        if self.wheel_config["calibration"][f"{axis}Type"] == "linear":
+                            min = self.wheel_config["calibration"][f"{axis}Min"]
+                            max = self.wheel_config["calibration"][f"{axis}Max"]
                             value = int(round(-100/(min-max)*(value)+50, 0))
+
+                            # reverse input for controller to recognize little button press as low acceleration / braking
+                            if is_controller:
+                                value = 100 - value
+
                             if value < 0:
-                                value = 0
+                                value = 100 if is_controller else 0
                             if value > 100:
-                                value = 100
+                                value = 0 if is_controller else 100
 
                     event_dict = {"type": axis, "value": value}
                     self.sample_count = 0
@@ -112,7 +115,7 @@ class SteeringWheel:
     def setSampleRate(self, n: int):
         """Sample rate of axes input can be set
         
-        n: every n'th value of axes input is used, values in between are skipped
+        n: every n-th value of axes input is used, values in between are skipped
         """
         self.sample_rate = n
 

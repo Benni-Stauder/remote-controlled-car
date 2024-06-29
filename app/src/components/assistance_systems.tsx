@@ -4,12 +4,15 @@ import { useStore } from "@/lib/store";
 export default function AssistanceSystems() {
   const {
     state: {
-      settings: { mode, assistance },
+      settings: { speed, mode, assistance }, websocket
     },
     actions: {
       settings: { setAssistance },
     },
   } = useStore();
+
+
+
   const isNotPro = mode !== "pro";
   return (
     <div className="flex flex-col p-5 h-auto">
@@ -27,7 +30,16 @@ export default function AssistanceSystems() {
         <Switch
           checked={assistance}
           disabled={isNotPro}
-          onClick={() => setAssistance(!assistance)}
+          onClick={() => {
+            setAssistance(!assistance)
+            const websocketMessage = {
+              "maxSpeed" : speed,
+              "mode" : mode,
+              "assistance" : !assistance
+            }
+            websocket?.send(JSON.stringify(websocketMessage))
+          }
+        }
         />
       </div>
     </div>
