@@ -1,19 +1,17 @@
-# Backend Directory
-The backend is designed to manage communication and data flow between the frontend and the RC car. It ensures that all data is correctly shared among the different components of this project. Additionally, the backend handles all incoming control inputs and stores them to be accessible for all components of the backend.
+# Backend-Verzeichnis
 
+Das Backend ist darauf ausgelegt, die Kommunikation und den Datenfluss zwischen dem Frontend und dem RC-Auto zu verwalten. Es stellt sicher, dass alle Daten korrekt zwischen den verschiedenen Komponenten dieses Projekts geteilt werden. Zusätzlich verarbeitet das Backend alle eingehenden Steuerungseingaben und speichert sie, sodass sie für alle Backend-Komponenten zugänglich sind.
 
-## Files
+## Dateien
 - UDPServer.py
 - WebSocketServer.py
 - SharedData.py
 
-## Running the Backend
-The files of the backend are supposed to be executed as one complete ecosystem, not separately. To run the backend, you should use the ../main.py script located in the parent folder of this directory. This script runs all the required parts of the backend together. Do not attempt to start individual components like UDPServer.py or WebSocketServer.py separately, as this will lead to unintended behavior. Refer to the README in the src directory for detailed instructions on how to run the backend correctly.
+## Ausführen des Backends
+Die Dateien des Backends sollen als ein komplettes Ökosystem ausgeführt werden, nicht separat. Um das Backend auszuführen, sollten Sie das ../main.py Skript im übergeordneten Verzeichnis dieses Ordners verwenden. Dieses Skript führt alle erforderlichen Teile des Backends zusammen aus. Versuchen Sie nicht, einzelne Komponenten wie UDPServer.py oder WebSocketServer.py separat zu starten, da dies zu unerwartetem Verhalten führen wird. Weitere Anweisungen zum korrekten Ausführen des Backends finden Sie in der README-Datei im src-Verzeichnis.
 
+## Zweck
+Das Backend-Verzeichnis enthält hauptsächlich einen UDP-Server zur Kommunikation mit dem RC-Auto, einen WebSocket-Server zum Datenaustausch mit dem Frontend und einen gemeinsamen Datenspeicher. Der Hauptzweck besteht darin, die erforderlichen Datenaustausche durch den asynchronen Betrieb aller Schnittstellen zu erleichtern. Das Frontend, das RC-Auto und das Eingabegerät (z.B. Lenkrad) greifen alle auf eine einzelne statische Klasse zu, die als gemeinsamer Speicher dient. Ein großer Vorteil dieses Ansatzes ist, dass er blockierende Schnittstellen verhindert, da sie alle unabhängig voneinander arbeiten.
 
-## Purpose
-The backend directory primarily contains a UDP server for communication with the RC car, a WebSocket server for data exchange with the frontend, and a shared data storage. The primary purpose is to facilitate the required data exchanges by running all interfaces asynchronously. The frontend, the RC car, and the input device (e.g., steering wheel) all access a single static class that acts as shared storage. A big advantage of this approach is that it prevents blocking interfaces since they all operate independently of each other.
-
-
-## Shared Data Access
-SharedData is a static class that contains exchanged data such as control inputs, RC car odometry, and user settings. It allows asynchronous components to access a common data storage for both writing and reading, ensuring that all parts of the backend have constant access to the currently available values. To prevent issues with data concurrency, Python's asyncio.Lock is used. Therefore, the lock makes sure that only one component can write to the shared data at a time. Meanwhile, reading does not require a lock and is possible for any component at any time.
+## Gemeinsamer Datenzugriff
+SharedData ist eine statische Klasse, die ausgetauschte Daten wie Steuerungseingaben, Odometrie des RC-Autos und Benutzereinstellungen enthält. Sie ermöglicht es asynchronen Komponenten, auf einen gemeinsamen Datenspeicher sowohl zum Schreiben als auch zum Lesen zuzugreifen, sodass alle Teile des Backends konstant Zugang zu den aktuell verfügbaren Werten haben. Um Probleme mit der Datenkonkurrenz zu verhindern, wird Python's asyncio.Lock verwendet. Dadurch wird sichergestellt, dass nur eine Komponente gleichzeitig in die gemeinsamen Daten schreiben kann. Lesen erfordert jedoch keinen Lock und ist jederzeit für jede Komponente möglich.

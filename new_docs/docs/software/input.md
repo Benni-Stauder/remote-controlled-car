@@ -1,27 +1,25 @@
-# Input Device Directory
-## Overview
-The input device directory is used to establish a connection to a gaming wheel or controller, process the received data, and store it inside the SharedData.py class of the backend. A correct mapping between the received inputs and the actually pressed buttons is guaranteed through the device setup in config.json (only required for gaming wheel).
+# Eingabegerät-Verzeichnis
 
+## Übersicht
+Das Eingabegerät-Verzeichnis wird verwendet, um eine Verbindung zu einem Gaming-Lenkrad oder Controller herzustellen, die empfangenen Daten zu verarbeiten und diese in der SharedData.py-Klasse des Backends zu speichern. Eine korrekte Zuordnung zwischen den empfangenen Eingaben und den tatsächlich gedrückten Tasten wird durch die Geräteeinrichtung in config.json sichergestellt (nur für Gaming-Lenkräder erforderlich).
 
-## Files
+## Dateien
 - InputDevice.py
 - InputDeviceListener.py
 
-## Running the Input Device Listener
-To run the input device listener, you can create an instance of the InputDeviceListener class directly. However, this is only recommended for testing purposes. For any other use case, the input device listener should be executed together with the entire backend. Therefore, the ../main.py script of the parent directory (src) should be executed. By doing so, it is ensured that the received inputs are actually sent to the RC car.
+## Ausführen des Eingabegerät-Listeners
+Um den Eingabegerät-Listener auszuführen, können Sie direkt eine Instanz der InputDeviceListener-Klasse erstellen. Dies wird jedoch nur für Testzwecke empfohlen. Für alle anderen Anwendungsfälle sollte der Eingabegerät-Listener zusammen mit dem gesamten Backend ausgeführt werden. Daher sollte das ../main.py Skript des übergeordneten Verzeichnisses (src) ausgeführt werden. Auf diese Weise wird sichergestellt, dass die empfangenen Eingaben tatsächlich an das RC-Auto gesendet werden.
 
-For testing purposes, you can create an instance like this:
+Für Testzwecke können Sie eine Instanz wie folgt erstellen:
 
 ```python
 inputDeviceListener = InputDeviceListener(<device_index>)
 inputDeviceListener.run()
 ```
 
+Der Konstruktor von InputDeviceListener nimmt optional einen Integer-Wert namens device_index als Eingabe entgegen. Dieser Wert muss verwendet werden, wenn mehr als ein Gerät angeschlossen ist. Um auszuwählen, welches Gerät initialisiert werden soll, wird der angegebene device_index verwendet. Wenn nur ein Gerät angeschlossen ist, kann dieser Parameter weggelassen werden, da sein Standardwert 1 ist.
 
-The constructor of InputDeviceListener optionally takes an Integer value called device_index as input. This value has to be used if more than one device is connected. To select which device should be initialized, the provided device_index is used. If only one device is connected, this parameter may be left out as its default value is 1.
+## Zweck
+Die InputDevice-Klasse ist so konfiguriert, dass alle relevanten Ereignisse wie Tastendrücke, Joystick-Bewegungen oder Lenkbewegungen erfasst werden. Sie verarbeitet diese Steuereingaben vor und ordnet sie entweder Lenkwinkeln oder Prozentsätzen für Beschleunigung und Bremsen zu. Die Datenabfrage vom angeschlossenen Eingabegerät wird durch die Python-Bibliothek pygame implementiert, die als einfache API zur Verbindung mit beliebigen Eingabegeräten dient.
 
-
-## Purpose
-The InputDevice class is configured to capture all relevant events, such as key presses, joystick movements or steering. It preprocesses these control inputs, mapping them to either steering angles or percentages for acceleration and braking. Data retrieval from the connected input device is implemented through the Python library pygame, which serves as a simple API to connect with arbitrary input devices.
-
-The separate InputDeviceListener class is designed to asynchronously poll the input data. By using this dedicated listener class, input events can be registered without blocking the communication between frontend, backend, and the RC car.
+Die separate InputDeviceListener-Klasse ist darauf ausgelegt, die Eingabedaten asynchron abzufragen. Durch die Verwendung dieser dedizierten Listener-Klasse können Eingabeereignisse registriert werden, ohne die Kommunikation zwischen Frontend, Backend und dem RC-Auto zu blockieren.
