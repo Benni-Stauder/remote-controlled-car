@@ -1,0 +1,25 @@
+{
+  "defaultLocale": "de",
+  "locales": [
+    "de",
+    "en"
+  ],
+  "path": "i18n",
+  "currentLocale": "de",
+  "localeConfigs": {
+    "de": {
+      "label": "Deutsch",
+      "direction": "ltr",
+      "htmlLang": "de",
+      "calendar": "gregory",
+      "path": "de"
+    },
+    "en": {
+      "label": "English",
+      "direction": "ltr",
+      "htmlLang": "en",
+      "calendar": "gregory",
+      "path": "en"
+    }
+  }
+}

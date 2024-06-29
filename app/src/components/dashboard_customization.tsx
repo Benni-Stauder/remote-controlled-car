@@ -1,7 +1,7 @@
-import WebSocketConnector from "@/components/WebSocketConnector";
+
 import { Switch } from "@/components/ui/switch";
 import { useStore } from "@/lib/store";
-import { useRef } from "react";
+
 
 export default function DashboardCustomization() {
 	const {

@@ -4,7 +4,7 @@
     "beforeBuildCommand": "pnpm run build",
     "beforeDevCommand": "pnpm run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "../"
+    "distDir": "../dist"
   },
   "package": {
     "productName": "swe_controlled_car_frontend",

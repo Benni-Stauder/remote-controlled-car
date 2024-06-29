@@ -3,7 +3,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useStore } from "@/lib/store";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { Link } from "@tanstack/react-router";
-import { useRef } from "react";
 import { Button } from "./ui/button";
 
 export default function Header() {

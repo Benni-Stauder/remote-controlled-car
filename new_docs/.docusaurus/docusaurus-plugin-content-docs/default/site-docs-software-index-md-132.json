@@ -1,0 +1,23 @@
+{
+  "id": "software/index",
+  "title": "Software-Dokumentation",
+  "description": "Überblick",
+  "source": "@site/docs/software/index.md",
+  "sourceDirName": "software",
+  "slug": "/software/",
+  "permalink": "/docs/software/",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Hardware",
+    "permalink": "/docs/hardware"
+  },
+  "next": {
+    "title": "Backend",
+    "permalink": "/docs/software/backend"
+  }
+}

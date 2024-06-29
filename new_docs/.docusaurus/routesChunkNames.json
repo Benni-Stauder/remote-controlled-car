@@ -1,0 +1,125 @@
+{
+  "/__docusaurus/debug-5ff": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/config-5ba": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/content-a2b": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    },
+    "__props": "__props---docusaurus-debug-content-3-c-0-be2"
+  },
+  "/__docusaurus/debug/globalData-c3c": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/metadata-156": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/registry-88c": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/routes-000": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/about-ca4": {
+    "__comp": "__comp---site-src-pages-about-tsx-618-aa9",
+    "__context": {
+      "plugin": "plugin---abouta-74-d48"
+    },
+    "config": "config---about-5-e-9-bcb"
+  },
+  "/features-374": {
+    "__comp": "__comp---site-src-pages-features-tsx-799-659",
+    "__context": {
+      "plugin": "plugin---abouta-74-d48"
+    },
+    "config": "config---about-5-e-9-bcb"
+  },
+  "/imprint-318": {
+    "__comp": "__comp---theme-mdx-page-1-f-3-b90",
+    "__context": {
+      "plugin": "plugin---abouta-74-d48"
+    },
+    "content": "content---imprintafb-ab2"
+  },
+  "/privacy-policy-a6b": {
+    "__comp": "__comp---theme-mdx-page-1-f-3-b90",
+    "__context": {
+      "plugin": "plugin---abouta-74-d48"
+    },
+    "content": "content---privacy-policyc-95-631"
+  },
+  "/docs-b1e": {
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
+    "__context": {
+      "plugin": "plugin---docsaba-d7c"
+    }
+  },
+  "/docs-0a6": {
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "__props": "__props---docs-005-788"
+  },
+  "/docs-31e": {
+    "__comp": "__comp---theme-doc-roota-94-67a"
+  },
+  "/docs/frontend-509": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-frontend-29-f-dcb"
+  },
+  "/docs/getting-started-3fb": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-getting-startedd-58-f94"
+  },
+  "/docs/hardware-ec7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-hardwarea-24-08d"
+  },
+  "/docs/rc-car-87c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rc-car-6-e-1-116"
+  },
+  "/docs/software/-1c3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-software-132-f68"
+  },
+  "/docs/software/backend-537": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-software-backend-4-a-3-cce"
+  },
+  "/docs/software/demo-4c8": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-software-demo-467-c2b"
+  },
+  "/docs/software/input-f51": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-software-input-95-e-457"
+  },
+  "/-e5f": {
+    "__comp": "__comp---site-src-pages-index-tsx-1-df-d3e",
+    "__context": {
+      "plugin": "plugin---abouta-74-d48"
+    },
+    "config": "config---about-5-e-9-bcb"
+  }
+}
