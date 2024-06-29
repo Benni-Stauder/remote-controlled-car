@@ -6,12 +6,14 @@ import time
 
 # initialize PWM outputs for esc and steering servo
 
-servo = Servo(18)
-esc = Servo(19)
-bufferSize = 1024
+try:
+    servo = Servo(18)
+    esc = Servo(19)
+    bufferSize = 1024
+except:
+    raise Exception("Raspberry Pi required: these unit tests require hardware that supports GPIO.")
 
 # debug print statement flag
-
 debug = False
 
 # define maximum speeds for forward and reverse
@@ -61,7 +63,11 @@ async def receive_udp_message():
     # Create a UDP socket
     UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     UDPClientSocket.setblocking(False)
-    UDPClientSocket.bind((UDP_IP, UDP_PORT))
+
+    try:
+        UDPClientSocket.bind((UDP_IP, UDP_PORT))
+    except:
+        print("Could not bind UDP socket")
 
     loop = asyncio.get_running_loop()
     while True:

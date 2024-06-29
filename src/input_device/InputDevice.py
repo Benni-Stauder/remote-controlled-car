@@ -1,5 +1,6 @@
 import contextlib
 import json
+from pathlib import Path
 
 with contextlib.redirect_stdout(None):
     import pygame
@@ -10,7 +11,7 @@ class InputDevice:
 
     def __init__(self) -> None:
         """Initialization of pygame joysticks and variables"""
-        with open('../config.json') as f:
+        with open(str(Path(__file__).parent) + '\\..\\config.json') as f:
             wheel_config = json.load(f)
 
         pygame.joystick.init()

@@ -1,5 +1,6 @@
 import socket
 import json
+from pathlib import Path
 from time import sleep
 
 from VehicleDataSimulator import VehicleDataSimulator
@@ -17,7 +18,7 @@ Hence the data is sent using a binary encoding, this is the byte order:
 """
 
 # load configurations
-with open("../../config.json") as f:
+with open(str(Path(__file__).parent) + '\\..\\..\\config.json') as f:
     config = json.load(f)
     config = config["backend"]
 

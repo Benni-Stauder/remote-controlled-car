@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 import json
+from pathlib import Path
 
 from src.backend.SharedData import SharedData
 
@@ -14,7 +15,7 @@ class WebSocketServer:
         """
          Initializes the websocket server by loading ip address and port from config.json.
         """
-        with open("../../config.json") as f:
+        with open(str(Path(__file__).parent) + '\\..\\config.json') as f:
             serverConfig = json.load(f)
 
             self.host = serverConfig['frontend']['ip']

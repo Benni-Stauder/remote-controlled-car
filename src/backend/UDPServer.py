@@ -2,6 +2,7 @@ import asyncio
 import json
 import socket
 import traceback
+from pathlib import Path
 
 from src.backend.SharedData import SharedData
 
@@ -23,7 +24,7 @@ class ServerUDP:
         self.demo = demo
 
         # Load configurations from server
-        self.serverConfig = self.load_config('../config.json')
+        self.serverConfig = self.load_config(str(Path(__file__).parent) + '\\..\\config.json')
 
         # Retrieve host IP address
         self.hostIP = self.get_host_ip()
