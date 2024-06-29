@@ -1,7 +1,6 @@
 import DashboardPreview from "@/components/dashboard_preview";
 import Header from "@/components/header";
 import SettingsForm from "@/components/settings_form";
-import { Separator } from "@radix-ui/react-separator";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/settings")({

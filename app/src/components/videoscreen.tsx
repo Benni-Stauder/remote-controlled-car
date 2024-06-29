@@ -130,7 +130,6 @@ export const Gauges = ({
 	} = useStore();
 	const liveSpeed = useStore((state) => state.state.livedata.speed);
 	const liveRpm = useStore((state) => state.state.livedata.rpm);
-
 	return (
 		<>
 			<div
