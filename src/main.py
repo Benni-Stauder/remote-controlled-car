@@ -23,8 +23,9 @@ async def main():
 
 
 if __name__ == "__main__":
-
     try:
         asyncio.run(main())
+
     except KeyboardInterrupt:
+        print("Mainloop has been finished due to KeyboardInterrupt.")
         pass

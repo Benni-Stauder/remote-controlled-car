@@ -15,7 +15,7 @@ class ServerUDP:
         """
         Initializes the UDP server with  socket parameters.
 
-        :param demo: Boolean flag to turn off timeouts for demo mode.
+        :param demo: Boolean flag to turn off timeouts for demo_simulator mode.
         """
         self.protocol = None
         self.transport = None
@@ -82,11 +82,12 @@ class ServerUDP:
         loop = asyncio.get_running_loop()
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         serverSocket.bind((self.hostIP, self.port))
-        serverSocket.setblocking(False)
+
         self.transport, self.protocol = await loop.create_datagram_endpoint(
             lambda: UDPServerProtocol(self.clientIP, self.bufferSize),
             sock=serverSocket
         )
+
         return serverSocket
 
 
@@ -110,7 +111,7 @@ class UDPServerProtocol:
         """
         Called when a connection is made.
 
-        :param transport: Transport object representing the connection.
+        :param transport: The transport object contains the socket representing the connection.
         """
         self.transport = transport
 
@@ -136,25 +137,39 @@ class UDPServerProtocol:
         :param data: The received binary stream.
         :param address: The address of the client.
         """
+
+        # Send current controls to the client
+        binaryControls = await SharedData.getBinaryData()
+        self.transport.sendto(binaryControls.to_bytes(5), address)
+
         try:
             # Convert received odometry data into a binary
             binVehicleData = int.from_bytes(data, byteorder='big')
-            print("vd" + str(binVehicleData))
-
-            # Get vehicle speed from byte 1
-            speed = (binVehicleData & 0xFF00) >> 8
 
             # Get vehicle rpm from byte 0
             # To reduce overhead rpm data was reduced by 100 and decided by 10 on client side
-            rpm = 100 + 10 * (binVehicleData & 0x00FF)
+            rpm = 100 + 10 * (binVehicleData & 0x0000FF)
+
+            # Get vehicle speed from byte 1 and battery from byte 2
+            speed = (binVehicleData & 0x00FF00) >> 8
+            battery = (binVehicleData & 0xFF0000) >> 8 * 2
 
             # Store received values in shared data class
             await SharedData.update("rpm", rpm)
             await SharedData.update("speed", speed)
+            await SharedData.update("battery", battery)
 
-            # Send current controls to the client
-            binaryControls = await SharedData.getBinaryData()
-            self.transport.sendto(binaryControls.to_bytes(5), address)
+            print(f"Rpm: {rpm}, Speed: {speed}, battery: {battery}")
 
         except:
             traceback.print_exc()
+
+    def connection_lost(self, connection):
+        """
+        This method is automatically called when the connection to the UDP server is lost.
+        It ensures that the UDP socket is properly closed.
+        """
+
+        if not connection:
+            self.transport.close()
+            print("\n" +  "UDP server closed due to connection loss.")

@@ -28,10 +28,10 @@ class InputDeviceListener:
         # wait until the selected device is connected
         while len(connectedDevices) <= deviceIndex:
             if len(connectedDevices) == 1:
-                message = (f"{len(connectedDevices)} device is connected. Please connect input device N.{deviceIndex + 1}"
+                message = (f"\n{len(connectedDevices)} device is connected. Please connect input device N.{deviceIndex + 1}"
                            f" and restart the application.")
             else:
-                message = (f"{len(connectedDevices)} devices are connected.Please connect input device N.{deviceIndex + 1}"
+                message = (f"\n{len(connectedDevices)} devices are connected. Please connect input device N.{deviceIndex + 1}"
                            f" and restart the application.")
 
             # print the message and flush the buffer to stay at the same line

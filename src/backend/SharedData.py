@@ -28,7 +28,9 @@ class SharedData:
 
     _vehicle = {
         "battery": 0,
-        "drive_mode": 0
+        "drive_mode": 0,
+        "assistance": 0,
+        "max_speed": 0,
     }
 
     @classmethod
@@ -51,7 +53,7 @@ class SharedData:
                 cls._odometry[key] = value
 
             # update values inside vehicle JSON
-            elif key in ["battery", "drive_mode"]:
+            elif key in ["battery", "drive_mode", "assistance", "max_speed"]:
                 cls._vehicle[key] = value
 
             # return either success or failure
@@ -106,11 +108,11 @@ class SharedData:
         """
 
         async with cls._lock:
-            emergencyStop = cls._vehicle["emergency_stop"]
-            driveMode = cls._vehicle["drive_mode"]
             steering = cls._controls["steering"]
             acceleration = cls._controls["accelerating"]
             braking = cls._controls["braking"]
+            driveMode = cls._vehicle["drive_mode"]
+            emergencyStop = cls._controls["emergency_stop"]
 
         # shift steering values by 90 degrees to avoid negative values
         positiveSteering = steering + 90

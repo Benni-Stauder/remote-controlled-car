@@ -1,7 +1,8 @@
 import socket
 import json
-import random
 from time import sleep
+
+from VehicleDataSimulator import VehicleDataSimulator
 
 """
 This script provides a simulation of the UDP client running on the rc car. It serves as a demonstration of
@@ -26,11 +27,13 @@ serverIP = config["server"]["ip"]
 port = config["port"]
 bufferSize = config["bufferSize"]
 
-while True:
+# initialize the simulator and assume a full car battery at the beginning
+simulator = VehicleDataSimulator()
+battery = 100
+
+while battery > 1:
     # generate random vehicle data
-    speed = random.randint(0, 33)
-    rpm = random.randint(0, 100)
-    battery = random.randint(0, 100)
+    speed, rpm, battery = simulator.simulate_driving()
 
     # create binary encoding of vehicle data
     binVehicleData = (battery << 2*8) | (speed << 8) | rpm
@@ -59,5 +62,10 @@ while True:
 
     # limit the sending speed to 100ms for demonstration purpose
     sleep(0.1)
+
+# stop the UDP client after the simulated car battery is empty
+UDPClientSocket.close()
+print("\n" + "Simulation has been canceled due to low vehicle battery.")
+
 
 
