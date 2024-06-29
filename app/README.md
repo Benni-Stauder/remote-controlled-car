@@ -8,7 +8,6 @@
 5. [Frontend-Komponenten](#frontend-komponenten)
 6. [Tauri und Rust](#tauri-und-rust)
 
-*Achtung: Sollte Schritt 5 zu Problemen führen, müssen ggf. Execution_Policies angepasst werden. Hierzu ```Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted``` ausführen.*
 
 ## Einführung
 <p style="text-align: justify;">
@@ -22,7 +21,7 @@ Diese Dokumentation bezieht sich lediglich auf das Frontend des Projektes und se
 1. React
 
    React ist eine beliebte JavaScript-Bibliothek zur Erstellung von Benutzeroberflächen, insbesondere von Single-Page-Anwendungen, bei denen sich Daten häufig ändern. In diesem Projekt wird React aus folgenden Gründen verwendet:
-
+   
    - Komponentenbasierte Architektur: Die komponentenbasierte Struktur von React ermöglicht wiederverwendbare UI-Komponenten, wodurch der Code modularer und einfacher zu warten ist.
    - Deklarative UI: React ermöglicht die deklarative UI-Entwicklung, was den Prozess der Gestaltung interaktiver und dynamischer Benutzeroberflächen vereinfacht.
    - Virtueller DOM: Der virtuelle DOM von React verbessert die Leistung, indem er die direkte Manipulation des tatsächlichen DOM minimiert und somit schnellere UI-Updates ermöglicht.

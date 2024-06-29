@@ -1,7 +1,6 @@
 # remote-controlled-car
 
-venv activate
-req installieren
+
 
 ## Inhaltsverzeichnis
 1. [Einführung](#einführung)
@@ -20,7 +19,7 @@ Dieses Projekt beinhaltet die Software für das Ansteuern eines RC-Autos.
 #### Voraussetzungen
 - Node.js (>= 14.x)
 - Rust 1.79.0
-- ffmpeg
+- FFMPEG
 - Python (>= 3.11)
 
 #### Installation
