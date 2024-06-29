@@ -1,0 +1,46 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.doc.Getting Started": {
+    "message": "Getting Started",
+    "description": "The label for the doc item Getting Started in sidebar tutorialSidebar, linking to the doc getting-started"
+  },
+  "sidebar.tutorialSidebar.doc.Hardware": {
+    "message": "Hardware",
+    "description": "The label for the doc item Hardware in sidebar tutorialSidebar, linking to the doc hardware"
+  },
+  "sidebar.tutorialSidebar.doc.Software": {
+    "message": "Software",
+    "description": "The label for the doc item Software in sidebar tutorialSidebar, linking to the doc software"
+  },
+  "sidebar.tutorialSidebar.doc.Frontend": {
+    "message": "Frontend",
+    "description": "The label for the doc item Frontend in sidebar tutorialSidebar, linking to the doc frontend"
+  },
+  "sidebar.tutorialSidebar.doc.RC Car": {
+    "message": "RC Car",
+    "description": "The label for the doc item RC Car in sidebar tutorialSidebar, linking to the doc rc-car"
+  },
+  "sidebar.docsSidebar.doc.Getting Started": {
+    "message": "Getting Started",
+    "description": "The label for the doc item Getting Started in sidebar docsSidebar, linking to the doc getting-started"
+  },
+  "sidebar.docsSidebar.doc.Hardware": {
+    "message": "Hardware",
+    "description": "The label for the doc item Hardware in sidebar docsSidebar, linking to the doc hardware"
+  },
+  "sidebar.docsSidebar.doc.Software": {
+    "message": "Software",
+    "description": "The label for the doc item Software in sidebar docsSidebar, linking to the doc software"
+  },
+  "sidebar.docsSidebar.doc.Frontend": {
+    "message": "Frontend",
+    "description": "The label for the doc item Frontend in sidebar docsSidebar, linking to the doc frontend"
+  },
+  "sidebar.docsSidebar.doc.RC Car": {
+    "message": "RC Car",
+    "description": "The label for the doc item RC Car in sidebar docsSidebar, linking to the doc rc-car"
+  }
+}
