@@ -4,7 +4,6 @@ import { VideoScreen } from "@/components/videoscreen";
 import { useStore } from "@/lib/store";
 import { Cog6ToothIcon } from "@heroicons/react/16/solid";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import {toast} from "@/components/ui/use-toast.ts";
 
 

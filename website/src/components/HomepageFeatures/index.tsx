@@ -18,7 +18,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_video_files_fu10.svg').default,
     description: (
       <>
-          <Translate id={"innovative_camera"}>Dieses Projekt revolutioniert die Integration von Kameras in ferngesteuerte Fahrzeuge und ermöglicht eine beispiellose Videoqualität und Steuerungspräzision.</Translate>
+          <Translate id={"innovative_camera"}>Dieses Projekt ermöglicht ein immersives Erlebnis durch die Integration einer Live-Kameraübertragung in ein RC Auto.</Translate>
       </>
     ),
   },
@@ -30,7 +30,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_gaming_re_cma2.svg').default,
     description: (
       <>
-          <Translate id={"advanced_control"}>Unsere RC-Autos sind mit hochmodernen Steuerungssystemen ausgestattet, die von verschiedenen Geräten, einschließlich Controllern und Simulationsanlagen, betrieben werden können.</Translate>
+          <Translate id={"advanced_control"}>Das RC-Auto bietet eine flexible Steuerung - sowohl Controller als auch Gaming-Lenkräder sind unterstützt.</Translate>
       </>
     ),
   },
@@ -42,7 +42,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_web_browsing_p-77-h.svg').default,
     description: (
       <>
-          <Translate id={"accessibility"}>Wir stellen sicher, dass unsere Technologie für Enthusiasten aller Fähigkeitsstufen zugänglich ist, indem wir benutzerfreundliche Schnittstellen und umfassende Unterstützung bieten.</Translate>
+          <Translate id={"accessibility"}>Unser Projekt ist sowohl für Enthusiasten als auch für Anfänger zugänglich. Benutzerfreundliche Schnittstellen und viele Konfigurationsmöglichkeiten unterstützen dies.</Translate>
       </>
     ),
   },

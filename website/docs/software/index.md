@@ -22,7 +22,7 @@ await asyncio.gather(
     websocket_server.start()
 )
 ```
-**WICHTIG:** Es ist erforderlich, Instanzen ALLER drei Komponenten dieses Projekts zu erstellen und zu starten. Vernachlässigen der Abhängigkeiten könnte zu unerwartetem Verhalten führen und sollte daher vermieden werden.
+**WICHTIG:** Es ist erforderlich, Instanzen ALLER drei Komponenten dieses Projekts zu erstellen und zu starten. Ein Vernachlässigen der Abhängigkeiten könnte zu unerwartetem Verhalten führen und sollte daher vermieden werden.
 
 ## Projekt-Konfiguration
 Die gesamte Konfiguration für dieses Projekt befindet sich in einer einzigen config.json Datei. Dies umfasst Abschnitte für die Netzwerkeinrichtung (UDP, Websockets) sowie Zuordnungen für Eingabegeräte.
