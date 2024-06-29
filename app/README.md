@@ -4,22 +4,17 @@
 1. [Einführung](#einführung)
 2. [Projektstruktur](#projektstruktur)
 3. [Installation](#installation)
-4. [Verwendung](#verwendung)
-    - [Auto-Steuerung](#auto-steuerung)
-    - [Live-Video-Stream](#live-video-stream)
+4. [Verbindung zum Backend](#verbindung-zum-backend)
 5. [Frontend-Komponenten](#frontend-komponenten)
-    - [ControllerComponent](#controllercomponent)
-    - [VideoStreamComponent](#videostreamcomponent)
-6. [Tauri](#tauri)
-7. [Fehlerbehebung](#fehlerbehebung)
-8. [Mitwirken](#mitwirken)
-9. [Lizenz](#lizenz)
+6. [Tauri und Rust](#tauri-und-rust)
 
 *Achtung: Sollte Schritt 5 zu Problemen führen, müssen ggf. Execution_Policies angepasst werden. Hierzu ```Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted``` ausführen.*
 
 ## Einführung
+<p style="text-align: justify;">
 Dieses Projekt ist eine Softwarelösung, die es ermöglicht, ein Auto per Racing Lenkrad zu steuern und einen Live-Video-Stream im Frontend anzuzeigen. 
 
+<p style="text-align: justify;">
 Diese Dokumentation bezieht sich lediglich auf das Frontend des Projektes und seine Funktionalitäten.
 
 ### Technologie-Stack
@@ -78,6 +73,7 @@ app/
 │   │   └── ...
 │   ├── lib/
 │   │   ├── store.ts
+│   │   ├── websocket_manager.ts
 │   │   ├── ...
 │   ├── main.tsx
 │   └── ...
@@ -133,10 +129,27 @@ app/
     pnpm tauri dev
     ```
 
-## Verwendung
+## Verbindung zum Backend
 <p style="text-align: justify;">
-Die Frontend Anwendung dient zur Visualisierung des Fahrerlebnisses.
-</p>
+Die Frontend-Anwendung wird über eine Websocket-Verbindung mit dem Backend verbunden. Dabei fungiert das Backend als Websocket-Server, mit dem sich das Frontend verbindet. 
+Nachdem eine Verbindung zum Backend hergestellt wurde, ist ein beidseitiger Datenaustausch möglich. 
+<p style="text-align: justify;">
+Der Verbindungsversuch wird durch den Nutzer getriggert (hierzu später mehr). 
+Der websocket manager (siehe Projektstruktur) sorgt dafür dass es immer nur eine verbindung des frontends mit dem webscoket backend gitb, dies erfolgt dadurch das ein Singleton des Websockets erschaffen wird, somit kann nur eine Verbindung existieren
+<p style="text-align: justify;">
+Das Frontend schickt Daten in Form eines json-Objektes, bei Änderung einer der für das Backend relevanten Daten.
+Das erwähnte Objekt ist wie folgt aufgebaut:
+
+```plaintext
+websocketMessage = {
+   maxSpeed: string,
+   mode: string,
+   assistance: bool,
+};
+```
+<p style="text-align: justify;">
+Durch den websocket werden konintuirlich livedaten aus dem backend an das frontend übertragen, welche dann in der UI verwendet werden. Ein beispiel hierfür ist zb die aktuelle Geschwindigkeit oder die aktuelle RPM (Drehzahl).
+
 
 
 ## Frontend-Komponenten
@@ -148,32 +161,35 @@ Beide Seiten bestehen aus mehrern React-Komponenten. Der Aufbau wird in folgende
 
 
 Im Folgenden werden die oben zu sehenden Komponenten genauer erläutert.
-</p>
+
 
 ### index.tsx
 
 <p style="text-align: justify;">
 Hierbei handelt es sich um die Hauptkomponente der App, sie ist gleichzeitig die Startseite.
 
+<p style="text-align: justify;">
 Die Seite besteht aus zwei Hauptkomponenten, dem Videoscreen (videoscreen.tsx) und einer Komponente, die den Verbindungsfortschritt zu RC-Auto und Kamera anzeigt (connector.tsx).
 
 Folgende Abbildung zeigt die Startseite:
 
 ![Startseite](src/assets/inedx.png)
-
+<p style="text-align: justify;">
 Durch Betätigen des "Connect"-Buttons ist es dem User möglich sich zu den anderen Komponenten des Projekts 
 ( Auto bzw. hier dem Websocket-Server, welcher die Fahrdaten liefert und Live Kamera).
 Es erscheint eine Verbindungsfortschrittanzeigen (hierzu später mehr), sobald alle Verbindungen hergestellt wurde, wird der Live-Kamera Feed in der Videoscreen-Komponente angezeigt.
 
+<p style="text-align: justify;">
 Durch Betätigen des "Disconnect"-Buttons werden die Verbindungen getrennt, dementsprechend werden weder Kamera-Feed noch Live-Daten des RC-Autos angezeigt.
 
+<p style="text-align: justify;">
 Desweiteren kann der User über das Settings-Symbol unten rechts auf die Einstellungen zugreifen (settings.tsx).
 Diese Funktion ist jedoch lediglich bei hergestellter Verbindung möglich.
 
-</p>
+
 
 ### connector.tsx
-
+<p style="text-align: justify;">
 Dieses React-Component ist für die Visualisierung der Verbindung zum Backend (Websocket-Server) und zur Kamera zuständig.
 
 <div style="text-align: center;">
@@ -183,16 +199,16 @@ Dieses React-Component ist für die Visualisierung der Verbindung zum Backend (W
 
 
 ### videoscreen.tsx
-
+<p style="text-align: justify;">
 Diese Komponente dient zum Abrufen und Anzeigen des Live Kamera Feeds.
-
 Zudem werden hier die Geschwindigkeit, die Drehzahl und weitere Livedaten angezeigt.
 
 
 ### settings.tsx
-
+<p style="text-align: justify;">
 Die Settings-Komponente ist die zweite "page" der Anwendung. Hier hat der Nutzer verschiedene Einstellungsmöglichkeiten.
 
+<p style="text-align: justify;">
 Die Seite besteht aus 5 kleineren Komponenten, die jeweils eine Hauptfunktionalität besitzen. Diese Aufteilung bewirkt, dass der Code modularer, leichter zu warten und wiederverwendbar ist, da jede Komponente klar abgegrenzte Aufgaben hat und unabhängig von den anderen entwickelt und getestet werden kann. 
 Zudem ermöglicht es eine bessere Skalierbarkeit und vereinfacht die Fehlersuche, da Probleme auf einzelne Komponenten isoliert werden können.
 
@@ -202,39 +218,60 @@ Folgende Abbildung zeigt die vollständige Einstellungsseite:
 
 
 ### header.tsx
-
+<p style="text-align: justify;">
 Dieses Component stellt, wie der Name schon sagt, den Header der Settingspage dar. Er besteht aus der Überschrift "Settings", dem Navigationsbutton zurück zur index.tsx und der Auswahl der Fahrmodi.
 Der Fahrmodus wird durch klicken der Checkbox ausgewählt. Je nach Modus kann der Benutzer mehr oder weniger Einstellungen treffen. Beispielsweise lassen sich die Assistenzsysteme nur ausschalten, sollte der Modus "Pro" ausgwählt sein.
 Der ausgewählte Fahrmodus wird durch eine neu getroffene Auswahl automatisch per Websocket-Verbindung an das Backend geschickt und dort weiter verarbeitet. Darum ist es zwingend notwendig, dass vor Änderung einer Einstellung bereits eine Verbindung zum Backend besteht. Dies ist dadurch gegeben, dass sich die Seite nur öffnen lässt, sollte eine Verbindung established sein.
 
 ### settings_form.tsx
-
+<p style="text-align: justify;">
 Dieses Component managed alle Einstellungen, die in der Anwendung getroffen werden können.
 wird unterteilt in speed_settings, assistance_system und dashboard_customization.
 
 ### speed_settings.tsx
-
+<p style="text-align: justify;">
 Hier kann der Nutzer die maximal mögliche Geschwindigkeit, die das RC-Auto fahren kann, einstellen. Sobald diese geändert wird, egal, ob durch Eingabe einer Zahl in das Inputfeld oder durch Bewegen des "Sliders", wird diese Information über die Websocket-Verbindung an das Backend gesendet.
 
-### assistance_system
+<p style="text-align: justify;">
+Die maximal einstellbare Geschwindigkeit beträgt 100 km/h, beziehungsweise 50 km/h, sollte sich das RC-Auto im "Child"-Modus befinden.
 
+
+### assistance_system.tsx
+<p style="text-align: justify;">
 Dieses Component besteht aus einer Überschrift "Driver Assistance Systems" und einem "Switch", durch welchen sich die Fahrerassistenzsysteme an- und ausschalten lassen. Bei einer Änderung des Schalters wird dies ebenfalls an das Backend gesendet und die Information weiter verarbeitet.
+
+<p style="text-align: justify;">
 Wichtig zu Erwähnen ist hier, dass ein Ausschalten der Assistenzsysteme nur möglich ist, wenn sich das RC-Auto im Modus "Pro" befindet.
 
-## Tauri und Rust
 
-Tauri ist ein Crossplattform (Mac, Windows und Linux) Desktopbundler, welcher es uns ermöglicht,
+### dashboard_customization.tsx
+<p style="text-align: justify;">
+In diesem Component kann der Nutzer sein "Dashboard" verändern. Es lässt sich eine Auswahl an möglichen Anzeigeoptionen treffen. Zu Beginn werden lediglich die Geschwindigkeit (Velocity), die Maximalgeschwindigkeit (Max Speed) und die Drehzahl (Rpm) angezeigt. Zusätzlich dazu stellt das RC-Auto jedoch Daten zur Beschleunigung und Bremspedalstellung zur Verfügung, die ebenfalls angezeigt werden können. 
+Der Schalter "Map", also eine Live-Karte ist in der aktuellen leider noch nicht möglich, da das RC-Auto noch über kein GPS-Signal verfügt.
+
+<p style="text-align: justify;">
+Diese Komponente ist im Kindermodus "Child" ebenfalls nicht verfügbar, um die Anzeige und damit das Fahrerlebnis möglichst einfacher zu halten.
+
+
+### dashboard_preview.tsx
+<p style="text-align: justify;">
+Die zuvor erläuterten Anzeigeoptionen des Dashboards lassen sich in diesem Component direkt einsehen. Die Komponente besteht aus einem "Miniatur"-Videoscreen, der sich, je nach Auswahl in dashboard_customization.tsx, aktualisiert.
+So bekommt der Nutzer eine genaue Vorstellung, wie der von ihm aufgebaute Videoscreen der Anwendung aussehen wird.
+
+## Tauri und Rust
+<p style="text-align: justify;">
+Tauri ist ein Crossplattform (Mac, Windows und Linux) Desktopbundler, welcher es ermöglicht,
 Webanwendungen als Executables zu bauen, und diese als "normale" Anwendungen auf unserem Computer zu starten.
 Dies erfolgt mithilfe der Webview Plattform. Innerhalb unserer Anwendung laufen zwei Prozesse, der Webview Prozess, zum Anzeigen der UI, 
 und der Tauri Prozess, mit dem durch Eventemitter, Funktionen aus dem Frontend in dem Tauri-Rust Backend aufgerufen werden können.
 So wird zum Beispiel in unserer Anwendung ein RSP-Stream in ein für das Frontend nutzbares Format geändert.
 
-[//]: # (TODO: add main.rs)
 
 ### Stream 
-
+<p style="text-align: justify;">
 Rust wird neben dem Starten der Anwendung ebenfalls zum Abrufen und prüfen des Live  Streams verwendet.
 
+<p style="text-align: justify;">
 Bei dem Stream handelt es sich um einen rsp-stream, der direkt vom RC-Auto bzw vom darin verbauten Rasberry Pi gesendet wird.
 Da dieses Format nicht direkt über einen Browser abrufbar ist, wird dieser mithilfe von FFMPEG in das Videoformat h256 umgewandelt, und dann über einen Rust-Webserver dem Frontend zur Verfügung gestellt, sodass das Livebild
 des Autos in der Anwendung angezeigt werden kann. Zum starten des FFMPEG Prozesses, der die Videodateien umwandelt, wird ebenfalls Rust benutzt.
