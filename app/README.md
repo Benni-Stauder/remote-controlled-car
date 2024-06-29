@@ -185,16 +185,40 @@ Dieses React-Component ist für die Visualisierung der Verbindung zum Backend (W
 
 Diese Komponente dient zum Abrufen und Anzeigen des Live Kamera Feeds.
 
-Zudem werden hier die Geschwindigkeit, die 
+Zudem werden hier die Geschwindigkeit, die Drehzahl und weitere Livedaten angezeigt.
+
 
 ### settings.tsx
 
 Die Settings-Komponente ist die zweite "page" der Anwendung. Hier hat der Nutzer verschiedene Einstellungsmöglichkeiten.
 
-
 Die Seite besteht aus 5 kleineren Komponenten, die jeweils eine Hauptfunktionalität besitzen. Diese Aufteilung bewirkt, dass der Code modularer, leichter zu warten und wiederverwendbar ist, da jede Komponente klar abgegrenzte Aufgaben hat und unabhängig von den anderen entwickelt und getestet werden kann. 
 Zudem ermöglicht es eine bessere Skalierbarkeit und vereinfacht die Fehlersuche, da Probleme auf einzelne Komponenten isoliert werden können.
 
+Folgende Abbildung zeigt die vollständige Einstellungsseite:
+
+![Startseite](src/assets/settings.png)
+
+
+### header.tsx
+
+Dieses Component stellt, wie der Name schon sagt, den Header der Settingspage dar. Er besteht aus der Überschrift "Settings", dem Navigationsbutton zurück zur index.tsx und der Auswahl der Fahrmodi.
+Der Fahrmodus wird durch klicken der Checkbox ausgewählt. Je nach Modus kann der Benutzer mehr oder weniger Einstellungen treffen. Beispielsweise lassen sich die Assistenzsysteme nur ausschalten, sollte der Modus "Pro" ausgwählt sein.
+Der ausgewählte Fahrmodus wird durch eine neu getroffene Auswahl automatisch per Websocket-Verbindung an das Backend geschickt und dort weiter verarbeitet. Darum ist es zwingend notwendig, dass vor Änderung einer Einstellung bereits eine Verbindung zum Backend besteht. Dies ist dadurch gegeben, dass sich die Seite nur öffnen lässt, sollte eine Verbindung established sein.
+
+### settings_form.tsx
+
+Dieses Component managed alle Einstellungen, die in der Anwendung getroffen werden können.
+wird unterteilt in speed_settings, assistance_system und dashboard_customization.
+
+### speed_settings.tsx
+
+Hier kann der Nutzer die maximal mögliche Geschwindigkeit, die das RC-Auto fahren kann, einstellen. Sobald diese geändert wird, egal, ob durch Eingabe einer Zahl in das Inputfeld oder durch Bewegen des "Sliders", wird diese Information über die Websocket-Verbindung an das Backend gesendet.
+
+### assistance_system
+
+Dieses Component besteht aus einer Überschrift "Driver Assistance Systems" und einem "Switch", durch welchen sich die Fahrerassistenzsysteme an- und ausschalten lassen. Bei einer Änderung des Schalters wird dies ebenfalls an das Backend gesendet und die Information weiter verarbeitet.
+Wichtig zu Erwähnen ist hier, dass ein Ausschalten der Assistenzsysteme nur möglich ist, wenn sich das RC-Auto im Modus "Pro" befindet.
 
 ## Tauri und Rust
 
