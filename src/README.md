@@ -1,8 +1,8 @@
 # README - Project source 
 
 ## Overview
-The project's source folder houses all the logic for both the backend and RC car. Additionally, this directory includes the main.py script, essential for launching the entire application. Executing this script establishes communication between the frontend, backend, and RC car, initiating the polling for input data.
-Moreover, all networking configurations and input device calibrations are stored in a `config.json` file within the same directory
+The project's source folder houses all the logic for both the backend and rc car. Additionally, this directory includes the main.py script for launching the application. Executing this script establishes communication between the frontend, backend, and rc car and starts the polling for input data.
+Moreover, all networking configurations and input device calibrations are stored in a `config.json` file within this directory.
 ## Files
 
 - **main.py**
