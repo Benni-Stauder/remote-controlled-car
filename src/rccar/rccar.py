@@ -75,7 +75,7 @@ async def receive_udp_message():
         except socket.error:
             # Non-blocking socket would raise an error if no data is available
             await asyncio.sleep(0.1)  # Add a short delay to prevent CPU spin
-            full_brake()
+            fullBrake()
             return None, False
 
 
@@ -198,8 +198,10 @@ def createUDPMessage(type, value):
     
 
 # Emergency braking if the connection is lost
-def full_brake():
-    
+def fullBrake():
+    """
+    Sets motor value to full brake and then to neutral.
+    """
     esc.value = 0
     time.sleep(0.1)
     esc.value = 0.5
@@ -271,7 +273,7 @@ async def main():
         await control_servo()
     except KeyboardInterrupt:
         print("Programm wurde gestoppt")
-        full_brake()
+        fullBrake()
 
 
 # Run the main function
