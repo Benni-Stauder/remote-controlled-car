@@ -200,7 +200,7 @@ def createUDPMessage(type, value):
 # Emergency braking if the connection is lost
 def full_brake():
     
-    esc.value = -1
+    esc.value = 0
     time.sleep(0.1)
     esc.value = 0.5
 
@@ -243,15 +243,8 @@ async def control_servo():
 
     tc = TractionControl()
 
-    connected = True
-
-
     while True:
         jsonMsg = await receive_udp_message()
-
-        if not connected:
-            full_brake()
-            break
 
         currentMode = getMode(jsonMsg)
 
@@ -271,8 +264,6 @@ async def control_servo():
             esc.value = getPower(jsonMsg)
 
         asyncio.run(send_udp_message(createUDPMessage('drivestatus', estimateSpeed(esc.value)), UDP_IP, UDP_PORT))
-
-
 
 
 async def main():

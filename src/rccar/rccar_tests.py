@@ -35,7 +35,7 @@ class CarTest(unittest.TestCase):
         self.assertEqual(rccar.getMode(""), 2)
 
     def test_get_speed_limit(self):
-        self.assertEqual(rccar.getMode(""), 30)
+        self.assertEqual(rccar.getSpeedLimit(""), 30)
 
     def test_create_udp_message(self):
         result = rccar.createUDPMessage('drivestatus', 45)
@@ -47,9 +47,9 @@ class CarTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_full_brake(self):
-         rccar.esc.value = 0.7
-         rccar.full_brake()
-         self.assertEqual(rccar.esc.value, -1)
+        rccar.esc.value = 0.7
+        rccar.full_brake()
+        self.assertEqual(rccar.esc.value, -1)
         time.sleep(0.1)
         self.assertEqual(rccar.esc.value, 0.5)
         
