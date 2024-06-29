@@ -194,9 +194,11 @@ Zudem ermöglicht es eine bessere Skalierbarkeit und vereinfacht die Fehlersuche
 
 ## Tauri und Rust
 
-Bei dem Frontend handelt es sich um eine Anwendung, die sowohl im Internet, als auch als Desktop Tauri-App abrufbar ist.
-
-- das Starten der Tauri-App erfolgt mithilfe von Rust
+Tauri ist ein Crossplattform (Mac, Windows und Linux) Desktopbundler, welcher es uns ermöglicht,
+Webanwendungen als Executables zu bauen, und diese als "normale" Anwendungen auf unserem Computer zu starten.
+Dies erfolgt mithilfe der Webview Plattform. Innerhalb unserer Anwendung laufen zwei Prozesse, der Webview Prozess, zum Anzeigen der UI, 
+und der Tauri Prozess, mit dem durch Eventemitter, Funktionen aus dem Frontend in dem Tauri-Rust Backend aufgerufen werden können.
+So wird zum Beispiel in unserer Anwendung ein RSP-Stream in ein für das Frontend nutzbares Format geändert.
 
 [//]: # (TODO: add main.rs)
 
@@ -204,8 +206,9 @@ Bei dem Frontend handelt es sich um eine Anwendung, die sowohl im Internet, als 
 
 Rust wird neben dem Starten der Anwendung ebenfalls zum Abrufen und prüfen des Live  Streams verwendet.
 
-Bei dem Stream handelt es sich um einen rpc-stream, der direkt vom RC-Auto bzw vom darin verbauten Rasberry Pi gesendet wird.
-Da dieses Format nicht direkt über einen Browser abrufbar ist, wird dieser mithilfe eines Rust-Scripts umgewandelt und anschließend in der Komponente "videoscreen.tsx" angezeigt.
+Bei dem Stream handelt es sich um einen rsp-stream, der direkt vom RC-Auto bzw vom darin verbauten Rasberry Pi gesendet wird.
+Da dieses Format nicht direkt über einen Browser abrufbar ist, wird dieser mithilfe von FFMPEG in das Videoformat h256 umgewandelt, und dann über einen Rust-Webserver dem Frontend zur Verfügung gestellt, sodass das Livebild
+des Autos in der Anwendung angezeigt werden kann. Zum starten des FFMPEG Prozesses, der die Videodateien umwandelt, wird ebenfalls Rust benutzt.
 
 
 
