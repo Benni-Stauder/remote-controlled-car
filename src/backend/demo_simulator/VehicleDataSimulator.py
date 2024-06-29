@@ -45,7 +45,7 @@ class VehicleDataSimulator:
         """
 
         if self.speed < self.max_speed:
-            self.speed += random.uniform(0.2, 1.0)
+            self.speed += random.uniform(0.2, 2.0)
             self.speed = min(self.speed, self.max_speed)
 
     def brake(self):
@@ -69,7 +69,7 @@ class VehicleDataSimulator:
         Simulate a slowly decreasing battery percentage. Stop at 0 to prevent negative battery values.
         """
 
-        self.battery -= 0.52
+        self.battery -= 0.05
         self.battery = max(self.battery, 0)
 
 
