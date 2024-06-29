@@ -13,7 +13,6 @@ function ProjectSource({ setActiveTab }) {
         backgroundColor: '#2542ac',
         color: 'white',
         padding: '0 20px',
-        margin: '10px 25px',
         transition: 'background-color 0.3s',
     };
 
@@ -24,7 +23,7 @@ function ProjectSource({ setActiveTab }) {
     const floatRight = {
         display: 'flex',
         justifyContent: 'flex-end',
-        marginTop: '20px'
+        marginTop: '40px'
     };
 
     return (
@@ -113,7 +112,7 @@ function ProjectSource({ setActiveTab }) {
                     style={buttonStyle}
                     onMouseEnter={e => e.target.style.backgroundColor = hoverStyle.backgroundColor}
                     onMouseLeave={e => e.target.style.backgroundColor = buttonStyle.backgroundColor}
-                    onClick={() => setActiveTab('api')}
+                    onClick={() => setActiveTab('backend')}
                 >
                     next
                 </button>

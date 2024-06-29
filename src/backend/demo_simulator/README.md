@@ -13,7 +13,7 @@ to test the entire data communication between backend, frontend and a simulated 
 
 ## Running the simulator
 
-To start the simulated RC car, simply run the Python script within UDPClient.py. As this script uses the same configuration file as the entire backend, no further configurations are necessary.
+To start the simulated rc car, simply run the Python script within UDPClient.py. As this script uses the same configuration file as the entire backend, no further configurations are necessary.
 ```sh
  python UDPClient.py
  ```

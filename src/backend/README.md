@@ -23,7 +23,7 @@ Refer to the README in the `src` directory for detailed instructions on how to r
 ## Purpose
 The backend directory primarily contains a UDP server for communication with the RC car, a WebSocket server for data exchange with the frontend, and a shared data storage.
 
-The primary purpose is to facilitate the required data exchanges by running all interfaces asynchronously. The frontend, the RC car, and the input device (e.g., steering wheel) all access a single static class that acts as shared storage. A big advantage of this approach is that it prevents blocking interfaces since they all operate independently of each other.
+The primary purpose is to facilitate the required data exchanges by running all interfaces asynchronously. The frontend, the rc car, and the input device (e.g., steering wheel) all access a single static class that acts as shared storage. A big advantage of this approach is that it prevents blocking interfaces since they all operate independently of each other.
 
 ## Shared Data Access
 

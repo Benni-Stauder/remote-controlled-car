@@ -3,6 +3,9 @@ import { useState } from 'react';
 import GettingStarted from "./documentation/GettingStarted";
 import Hardware from "./documentation/Hardware";
 import Source from "./documentation/software/Source";
+import Backend from "./documentation/software/Backend";
+import Input from "./documentation/software/Input";
+import Demo from "./documentation/software/Demo";
 import Frontend from "./documentation/Frontend";
 import Rccar from "./documentation/Rccar";
 
@@ -24,9 +27,9 @@ function Documentation() {
                     {activeTab === 'hardware' && <Hardware />}
 
                     {activeTab === 'source' && <Source setActiveTab={setActiveTab}/>}
-                    {activeTab === 'backend' && <Source setActiveTab={setActiveTab}/>}
-                    {activeTab === 'input' && <Source setActiveTab={setActiveTab}/>}
-                    {activeTab === 'demo' && <Source setActiveTab={setActiveTab}/>}
+                    {activeTab === 'backend' && <Backend setActiveTab={setActiveTab}/>}
+                    {activeTab === 'input' && <Input setActiveTab={setActiveTab}/>}
+                    {activeTab === 'demo' && <Demo setActiveTab={setActiveTab}/>}
 
                     {activeTab === 'frontend' && <Frontend />}
                     {activeTab === 'rccar' && <Rccar />}
