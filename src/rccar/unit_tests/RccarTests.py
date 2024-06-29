@@ -1,6 +1,6 @@
 import unittest
 import json
-import rccar
+from .. import Rccar as rccar
 
 import json
 
