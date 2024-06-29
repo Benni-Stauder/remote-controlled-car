@@ -32,6 +32,7 @@ Diese Dokumentation bezieht sich lediglich auf das Frontend des Projektes und se
    - Virtueller DOM: Der virtuelle DOM von React verbessert die Leistung, indem er die direkte Manipulation des tatsächlichen DOM minimiert und somit schnellere UI-Updates ermöglicht.
    - Tailwind CSS: Tailwind ist ein vielseitiges CSS-Framework, das die Entwicklung von anpassbaren und reaktionsfähigen Designs beschleunigt. Es ermöglicht es, direkt in den Klassenstilen zu arbeiten, was die Entwicklungszeit verkürzt und die Konsistenz erhöht.
    - ShadCN: ShadCN ist eine Bibliothek, die speziell dafür entwickelt wurde, um mit React und Tailwind zu arbeiten. Sie bietet eine Sammlung von vorgefertigten UI-Komponenten, die nahtlos in das Projekt integriert werden können und die Entwicklung von Benutzeroberflächen weiter beschleunigen.
+   - Zustand: Dies ist eine Lösung zum Statemanagement in React, es wird ein globaler Store erstellt, in dem alle Daten der Anwendung gespeichert sind, dadurch können Daten im Store geändert werden und die neuen Daten sind an allen Stellen direkt vorhanden wo sie aus dem Store ausgelesen werden. Somit müssen Daten vom Backend nicht doppelt geladen werden, da sie durch den store global verfügbar sind.
 
 2. Vite
 
@@ -123,7 +124,10 @@ app/
    ```bash
     pnpm tauri build
     ```
-7. Tauri-App starten:
+   Die gebaute App kann dann mit der `src-tauri/target/release/<app_name>` Executable gestartet werden.
+
+
+7. Tauri-App im Developmentmodus starten:
     ```bash
     pnpm tauri dev
     ```
