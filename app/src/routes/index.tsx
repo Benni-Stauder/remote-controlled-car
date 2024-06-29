@@ -20,20 +20,7 @@ export default function Home() {
 		},
 	} = useStore();
 
-	const [data, setData] = useState({
-		speed: null,
-		rpm: null,
-		lateralAcceleration: null,
-		brakePercentage: null,
-	});
-	useEffect(() => {
-		setLiveData(
-			data.speed as unknown as number,
-			data.rpm as unknown as number,
-			data.lateralAcceleration as unknown as number,
-			data.brakePercentage as unknown as number,
-		);
-	}, [data]);
+
 
 	const {
 		state: { websocket, connected, steps },
@@ -57,10 +44,12 @@ export default function Home() {
 
 		ws.onmessage = (event) => {
 			const newData = JSON.parse(event.data);
-			setData((prevData) => ({
-				...prevData,
-				...newData,
-			}));
+			setLiveData(
+				newData.speed,
+				newData.rpm,
+				newData.lateralAcceleration,
+				newData.brakePercentage,
+			);
 		};
 
 		ws.onerror = (error) => {
