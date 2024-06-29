@@ -1,10 +1,9 @@
 import unittest
 import json
-from .. import Rccar as rccar
-
-import json
-
 import time
+
+import Rccar  as rccar
+
 
 class CarTest(unittest.TestCase):
     def test_steering_angle(self):

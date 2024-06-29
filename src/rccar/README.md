@@ -1,170 +1,168 @@
-# RC Auto Software
+# RC Car Software
 
-Diese Dokumentation bietet einen Überblick über den Code für die Ansteuerung eines RC-Autos, das mit einem PC über UDP kommuniziert und ein Servo sowie einen ESC (Electronic Speed Controller) basierend auf den empfangenen Nachrichten steuert.
+This documentation provides an overview of the code for controlling an RC car that communicates with a PC via UDP. It controls a servo and an Electronic Speed Controller (ESC) based on the received messages.
 
-## Inhaltsverzeichnis
+## Table of contents
 
-1. [Übersicht](#übersicht)
-2. [Abhängigkeiten](#abhängigkeiten)
-3. [Globale Variablen](#globale-variablen)
-4. [Funktionen](#funktionen)
-5. [Klassen](#klassen)
-6. [Hauptausführungsfluss](#hauptausführungsfluss)
-7. [Unittests](#unittests)
+1. [Overview](#Overview)
+2. [Dependencies](#Dependencies)
+3. [Global Variables](#Global-Variables)
+4. [Functions](#Functions)
+5. [Classes](#Classes)
+6. [Main Execution Flow](#Execution-flow)
+7. [Unit Tests](#Unit-tests)
 
-## Übersicht
 
-Basierend auf von einem PC empfangenen UDP-Nachrichten wird ein Servo und ein ESC gesteuert. Des Weiteren beinhaltet die Steuerung Funktionen zur Geschwindigkeitsabschätzung, Geschwindigkeitsbegrenzung, Modusauswahl und Traktionskontrolle.
+## Overview
 
-## Abhängigkeiten
+Based on UDP messages received from a PC, this control system manages a servo and an ESC. Additionally, it includes functions for speed estimation, speed limitation, mode selection, and traction control.
 
-Die folgenden Python-Bibliotheken sind erforderlich, um diesen Code auszuführen:
+## Dependencies
 
+The following Python libraries are required to execute this code:
 - `asyncio`
 - `socket`
 - `json`
 - `gpiozero`
 - `time`
 
-## Globale Variablen
+## Global Variables
 
-- **servo**: Instanz der `Servo`-Klasse zur Steuerung des Lenkservos.
-- **esc**: Instanz der `Servo`-Klasse zur Steuerung des ESC.
-- **bufferSize**: Größe des UDP-Nachrichtenpuffers.
-- **debug**: Debug-Flag für Druckanweisungen.
-- **maxSpeedPos**: Maximale Vorwärtsgeschwindigkeit.
-- **maxSpeedNeg**: Maximale Rückwärtsgeschwindigkeit.
-- **currentMode**: Aktueller Fahrmodus.
-- **UDP_IP**: IP-Adresse für die UDP-Verbindung.
-- **UDP_PORT**: Port für die UDP-Verbindung.
+- **servo**: Instance of the `Servo` class for controlling the steering servo.
+- **esc**: Instance of the `Servo` class for controlling the ESC.
+- **bufferSize**: Size of the UDP message buffer.
+- **debug**: Debug flag for print statements.
+- **maxSpeedPos**: Maximum forward speed.
+- **maxSpeedNeg**: Maximum reverse speed.
+- **currentMode**: Current driving mode.
+- **UDP_IP**: IP address for the UDP connection.
+- **UDP_PORT**: Port for the UDP connection.
 
-## Funktionen
+## Functions
 
 ### `send_udp_message(message, dest_ip, dest_port)`
 
-Sendet eine UDP-Nachricht an eine bestimmte IP-Adresse und einen bestimmten Port.
+Sends a UDP message to a specific IP address and port.
 
 **Parameter:**
-- `message`: Die zu sendende Nachricht.
-- `dest_ip`: Ziel-IP-Adresse.
-- `dest_port`: Zielport.
+- `message`: The message to be sent.
+- `dest_ip`: Destination IP address.
+- `dest_port`: Destination port..
 
 ### `receive_udp_message()`
 
-Empfängt UDP-Nachrichten, die vom PC gesendet werden.
+Receives UDP messages sent from the PC.
 
-**Rückgabewert:**
-- Geparste JSON-Nachricht.
+**Return:**
+- Parsed JSON message.
 
 ### `getSteering(jsonMsg)`
 
-Gibt den vom PC angeforderten Lenkwinkel zurück.
+Returns the steering angle requested by the PC.
 
 **Parameter:**
-- `jsonMsg`: JSON-Nachricht mit Steuerungsdaten.
+- `jsonMsg`: JSON message containing control data.
 
-**Rückgabewert:**
-- Lenkwinkel in Grad [-90° bis 90°].
+**Return:**
+- Steering angle in degrees [-90° bis 90°].
 
 ### `estimateSpeed(escValue)`
 
-Schätzt die Geschwindigkeit basierend auf dem ESC-Wert.
+Estimates the speed based on the ESC value.
 
 **Parameter:**
-- `escValue`: Wert des ESC.
+- `escValue`: Current ESC value.
 
-**Rückgabewert:**
-- Geschätzte Geschwindigkeit [kmh].
+**Return:**
+- Estimated speed [kmh].
 
 ### `limitSpeed(reqEscValue, speedLimit)`
 
-Berechnet den neuen ESC-Wert basierend auf der konfigurierten Geschwindigkeitsbegrenzung.
+Calculates the new ESC value based on the configured speed limit.
 
 **Parameter:**
-- `reqEscValue`: Angeforderter ESC-Wert.
-- `speedLimit`: Gewünschte Geschwindigkeitsbegrenzung.
+- `reqEscValue`: Requested ESC value.
+- `speedLimit`: Desired speed limitation.
 
-**Rückgabewert:**
-- Begrenzter ESC-Wert.
+**Return:**
+- Limited ESC value.
 
 ### `getPower(jsonMsg)`
 
-Gibt die vom PC angeforderte Leistung (Wert für Beschleunigung oder Abbremsung) zurück.
+Returns the power requested by the PC (value for acceleration or deceleration).
 
 **Parameter:**
-- `jsonMsg`: JSON-Nachricht mit Steuerungsdaten.
+- `jsonMsg`: JSON message containing control data.
 
-**Rückgabewert:**
-- Leistungswert für Beschleunigung und Abbremsung [0 bis 100].
+**Return:**
+- Power value for acceleration and deceleration [0 to 100].
 
 ### `getSpeedLimit(jsonMsg)`
 
-Gibt die vom PC gesendete Geschwindigkeitsbegrenzung zurück.
+Returns the speed limit sent by the PC.
 
 **Parameter:**
-- `jsonMsg`: JSON-Nachricht mit Modusdaten.
+- `jsonMsg`: JSON message containing drive mode.
 
-**Rückgabewert:**
-- Geschwindigkeitsbegrenzung [kmh].
+**Return:**
+- Speed limitation [kmh].
 
 ### `getMode(jsonMsg)`
 
-Gibt den aktuellen Modus zurück, der vom PC gesendet wurde.
+Returns the current drive mode sent by the PC.
 
 **Parameter:**
-- `jsonMsg`: JSON-Nachricht mit Modusdaten.
+- `jsonMsg`: JSON message containing drive mode.
 
-**Rückgabewert:**
-- Aktueller Modus.
+**Return:**
+- Current drive mode.
 
 ### `createUDPMessage(type, value)`
 
-Erstellt eine UDP-Nachricht im JSON-Format, die an den PC gesendet werden soll.
+Creates a UDP message in JSON format to be sent to the PC.
 
 **Parameter:**
-- `type`: Typ der Nachricht.
-- `value`: In der Nachricht enthaltener Wert.
-
-**Rückgabewert:**
-- JSON-formatierte UDP-Nachricht.
+- `type`: Type of the message.
+- `value`: Value contained in the message.
+- 
+**Return:**
+- A JSON-formatted UDP message.
 
 ### `full_brake()`
 
-Setzt den Motorwert auf maximale Bremsleistung und anschließend auf neutral.
+Sets the motor value to maximum braking power and then to neutral.
 
-## Klassen
+## Classes
 
 ### `TractionControl`
 
-Emuliert die Traktionskontrolle, indem die Beschleunigung begrenzt wird.
+Emulates traction control by limiting acceleration.
 
 #### `__init__()`
 
-Initialisiert die Traktionskontrolle mit Standardparametern.
+Initializes traction control with default parameters.
 
 #### `control_acceleration(currentSpeed, targetSpeed)`
 
-Begrenzt die Beschleunigung, um einen Traktionskontrolleffekt zu erzielen.
+Limits acceleration to achieve a traction control effect.
 
 **Parameter:**
-- `currentSpeed`: Aktuelle Geschwindigkeit des Reifens.
-- `targetSpeed`: Zielgeschwindigkeit des Reifens, die erreicht werden soll.
+- `currentSpeed`: Current wheel speed.
+- `targetSpeed`: Target wheel speed, that is supposed to be reached.
 
-**Rückgabewert:**
-- Neue Geschwindigkeit nach Anwendung der Traktionskontrolle.
+**Return:**
+- New speed after applying traction control.
 
-## Ausführungsfluss
+## Execution flow
 
 ### `control_servo()`
 
-Hauptfunktion, die den ESC basierend auf den empfangenen Werten und Modus auf die Steuerungsdaten setzt.
+Major function that sets ESC based on the received values and mode to the control data.
 
 ### `main()`
 
-Einstiegspunkt des Programms. Führt die Funktion `control_servo` aus und behandelt evtl. durch Tastatur ausgelöste Interrupts.
+Entry point of the program. Executes the `control_servo` function and handles any keyboard-triggered interrupts.
 
-## Unittests
+## Unit tests
 
-The Unittests are designed to evaluate all logic containing functions inside the rccar class and therfor test the functionality of the code
-The downside of using Raspberry Pi propretary software is, that those unittests must be run on hardware, that support GPIO.
-Because of this the unittest currently must be run on your own Pi or via a github runner using CI/CD
+These unit tests are designed to evaluate all logic-containing functions inside the RCCar class and therefore test the functionality of the code. The downside of using Raspberry Pi proprietary software is that these unit tests must be run on hardware that supports GPIO. Because of this, the unit tests currently must be run on your own Pi or via a GitHub runner using CI/CD.
